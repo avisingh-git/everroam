@@ -499,3 +499,6 @@ body .eyebrow.hot{background:#E0161B;color:#fff}
 .bikemode .calf .cl{color:#FFE3DC}
 .bikemode .cal.open .calf{border-color:#fff}
 .bikemode .calpop{background:linear-gradient(145deg,#E8262A,#B3121A 60%,#8E0B10);border-color:rgba(255,255,255,.45)}
+
+/* hero video crop focus: when a portrait video is cropped on a wide screen, --vy picks which band stays visible (e.g. .hero{--vy:35%}) */
+.hv video{object-position:50% var(--vy,50%)}

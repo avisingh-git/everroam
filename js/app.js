@@ -6,7 +6,7 @@ const SRC = (new URLSearchParams(location.search).get("src") || "web").slice(0, 
 const wa = m => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(m)}`;
 const rid = () => Math.random().toString(36).slice(2, 5).toUpperCase();
 const ref = (t, b) => `EV-${SRC}-${t.code}${b.code}-${rid()}`;
-const img = f => `--img:url(media/${f})`;
+const img = f => `--img:url('${new URL(`media/${f}`, document.baseURI).href}')`;
 const title = t => (document.title = t ? `${t} | Everroam` : "Everroam, the journey never ends");
 const WAI = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path style="fill:var(--hs,#1EBE5A)" d="M7.5 6.5H10L11 9 9.6 10.2C10.4 11.8 12.2 13.6 13.8 14.4L15 13 17.5 14V16.5C17.5 17.1 17 17.6 16.4 17.6 11.2 17.3 6.7 12.8 6.4 7.6 6.4 7 6.9 6.5 7.5 6.5Z"/></svg>';
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -44,7 +44,17 @@ const calLabel = () => !sel.a ? "Select your dates" : !sel.e || sel.e === sel.a 
 const calCard = () => `<div class="cal" id="cal"><button type="button" class="calf" data-calopen aria-expanded="false" aria-controls="calbody"><span class="cl">Dates</span><span class="clab" id="callabel">${calLabel()}</span><i aria-hidden="true">\u25BE</i></button><div class="calpop" id="calbody" hidden>${calBody()}</div></div>`;
 
 const words = s => s.split(" ").map((w, i) => `<span class="w" style="--i:${i}">${w}</span>`).join(" ");
-const vid = n => `<video class="cv" muted loop playsinline preload="none" data-src="media/${n}.mp4" aria-hidden="true"></video>`;
+// landscape screens (laptops, phones turned sideways) try NAME-wide.mp4 first; if that file is missing the portrait video is used
+const heroSrc = n => {
+  // landscape (laptop, landscape phone) prefers the big file; portrait prefers the small one
+  const order = matchMedia("(min-aspect-ratio: 1/1)").matches ? ["-1080", "-720"] : ["-720", "-1080"];
+  return order.map(s => `<source src="media/${n}${s}.mp4" type="video/mp4">`).join("");
+};
+const vid = n => {
+  const order = matchMedia("(min-aspect-ratio: 1/1)").matches ? ["-1080", "-720"] : ["-720", "-1080"];
+  return `<video class="cv" muted loop playsinline preload="none" aria-hidden="true">` +
+    order.map(s => `<source data-src="media/${n}${s}.mp4" type="video/mp4">`).join("") + `</video>`;
+};
 const card = (t, i) => `<a class="tcard ph g${i % 3}" style="${img(t.slug + ".jpg")}" href="#/trips/${t.slug}">${vid(t.slug)}
   <span class="eyebrow">${t.live ? t.days + " days" : "Coming soon"}</span><h3>${t.name}</h3><p>${t.tag}</p></a>`;
 const page = (eb, h, body) => `<section class="pg"><div class="wrap"><span class="eyebrow">${eb}</span><h1>${h}</h1>${body}</div></section>`;
@@ -65,7 +75,7 @@ function home() {
     ["Your people", "18 to 35, solo or with a friend. You will fit right in."]];
   return `
   <section class="hero" data-bg="#030705">
-    <div class="hv ph g0"><video autoplay muted loop playsinline preload="metadata" poster="media/hero-poster.jpg"><source src="media/hero.mp4" type="video/mp4"></video></div>
+    <div class="hv ph g0"><video autoplay muted loop playsinline preload="metadata" poster="media/hero-poster.jpg">${heroSrc("hero")}</video></div>
     <div class="hc"><div class="cap"><span class="eyebrow">Small groups \u00B7 Big trips</span><h1>The journey never ends.</h1></div>
       <button class="cue" type="button" aria-label="Scroll down">Scroll</button></div></section>
   <div class="after">
@@ -184,7 +194,7 @@ function bikeHome() {
     ["A proper briefing", "Day one starts with a briefing, then we ride together."]];
   return `
   <section class="hero bk" data-bg="#8A0B11">
-    <div class="hv ph g2"><video autoplay muted loop playsinline preload="metadata" poster="media/bike-hero-poster.jpg"><source src="media/bike-hero.mp4" type="video/mp4"></video></div>
+    <div class="hv ph g2"><video autoplay muted loop playsinline preload="metadata" poster="media/bike-hero-poster.jpg">${heroSrc("bike-hero")}</video></div>
     <div class="lane" aria-hidden="true">${BIKE}</div>
     <div class="hc"><div class="cap"><span class="eyebrow">Everroam \u00B7 On two wheels</span><h1>Same roads. Ridden loud.</h1></div>
       <button class="cue" type="button" aria-label="Scroll down">Scroll</button></div></section>
@@ -238,7 +248,14 @@ const ioR = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersectin
 
 const ioV = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
-  if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause();
+  if (e.isIntersecting) {
+    if (v.dataset.loaded !== "1") {
+      v.querySelectorAll("source").forEach(s => { s.src = s.dataset.src; });
+      v.dataset.loaded = "1";
+      v.load();                       // browser now walks the source list
+    }
+    v.play().catch(() => {});
+  } else v.pause();
 }), { threshold: .3 });
 
 function render() {
