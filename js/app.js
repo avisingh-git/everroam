@@ -131,10 +131,10 @@ function trip(slug) {
   title(t.name); cur = slug; sel = { b: 0, q: 2, a: null, e: null }; calReset(); document.body.classList.add("trip");
   return `
   <div class="thero ph g${i % 3}" style="${img(t.slug + ".jpg")}"><div class="wrap">
-    <a class="back" href="#/trips">\u2190 All trips</a>${modeSw(t.slug, false)}<span class="eyebrow">${t.days} days \u00B7 ${t.route}</span>
+    ${modeSw(t.slug, false)}
     <h1>${t.name}</h1><p class="sub">${t.blurb}</p></div></div>
   <div class="wrap tbody">
-    <div class="chips">${t.highlights.map(h => `<span>${h}</span>`).join("")}</div>
+<a class="btn ghost dl-btn" href="media/Everroam-${t.name}.pdf" download="Everroam-${t.name}.pdf">\u2B07 Download itinerary</a>    <div class="chips">${t.highlights.map(h => `<span>${h}</span>`).join("")}</div>
     ${calCard()}
     ${t.live ? `<div class="pick"><div class="qty"><span>Travellers</span><div><button type="button" data-q="-1" aria-label="Fewer">\u2212</button><b id="qn">2</b><button type="button" data-q="1" aria-label="More">+</button></div></div></div>` : ""}
     <div><h2>Day by day</h2>${t.itinerary.map((d, k) =>
@@ -220,10 +220,10 @@ function btrip(slug) {
   title(t.name + " by bike"); cur = slug; bike = true; sel = { b: 0, q: 2, a: null, e: null }; calReset(); document.body.classList.add("trip");
   return `
   <div class="thero ph g${(i + 1) % 3}" style="${img(t.slug + "-bike.jpg")}"><div class="wrap">
-    <a class="back" href="#/bike">\u2190 Bike trips</a>${modeSw(t.slug, true)}<span class="eyebrow">${b.days} days \u00B7 ${b.grade}</span>
+    ${modeSw(t.slug, true)}
     <h1>${t.name}</h1><p class="sub">${b.blurb}</p></div></div>
   <div class="wrap tbody">
-    <div class="chips">${b.highlights.map(h => `<span>${h}</span>`).join("")}</div>
+<a class="btn ghost dl-btn" href="media/Everroam-${t.name}-biking.pdf" download="Everroam-${t.name}-biking.pdf">\u2B07 Download itinerary</a>   <div class="chips">${b.highlights.map(h => `<span>${h}</span>`).join("")}</div>
     ${calCard()}
     ${b.live ? `<div class="pick"><div class="qty"><span>Riders</span><div><button type="button" data-q="-1" aria-label="Fewer">\u2212</button><b id="qn">2</b><button type="button" data-q="1" aria-label="More">+</button></div></div></div>` : ""}
     <div><h2>The ride, day by day</h2><div class="ride" id="ride"><div class="road"><div class="bike">${BIKE}</div></div>
@@ -391,4 +391,27 @@ document.addEventListener("click", e => {
   if (!e.composedPath().some(n => n.id === "cal")) closeCal();     // composedPath: the tapped day may already be re-rendered
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeCal(); });
+/* download itinerary PDFs in the background — never leave the page */
+document.addEventListener("click", async e => {
+  const a = e.target.closest(".dl-btn");
+  if (!a) return;
+  e.preventDefault();
+  const url  = a.getAttribute("href");
+  const name = a.getAttribute("download") || url.split("/").pop();
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(r.status);
+    const blob = await r.blob();
+    const u = URL.createObjectURL(blob);
+    const tmp = document.createElement("a");
+    tmp.href = u;
+    tmp.download = name;
+    document.body.appendChild(tmp);
+    tmp.click();
+    tmp.remove();
+    setTimeout(() => URL.revokeObjectURL(u), 1500);
+  } catch (err) {
+    window.open(url, "_blank", "noopener");   // file:// fallback: new tab, site stays put
+  }
+});
 render();

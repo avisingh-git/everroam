@@ -1,12 +1,12 @@
 // Digits only, with country code. Replace with the real number.
-const WA_NUMBER = "910000000000";
+const WA_NUMBER = "+918250109700";
 
 // PLACEHOLDER content: edit prices, dates, routes and itineraries.
 // live:false shows a waitlist button instead of Reserve.
 const TRIPS = [
  {slug:"tawang", code:"TAW", name:"Tawang", live:true, tag:"Monasteries above the clouds", days:7, price:24500,
   route:"Guwahati, Bomdila, Tawang",
-  blurb:"High passes, a giant monastery and a valley that stays with you. Seven days with a small crew your age.",
+  blurb:"High passes, a giant monastery and a valley that stays with you.",
   batches:[{label:"Christmas batch",dates:"19–25 Dec",code:"2612"},{label:"New Year batch",dates:"28 Dec–3 Jan",code:"2701"}],
   highlights:["Sela Pass","Tawang Monastery","Group bonfire night"],
   itinerary:[["Day 1","Guwahati to Bomdila","Early pickup and a long scenic drive. First night in Bomdila."],

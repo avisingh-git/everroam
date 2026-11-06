@@ -733,3 +733,4 @@ html{scroll-padding-top:calc(56px + env(safe-area-inset-top));
   }
   .bikemode .stop.hit{animation:stopGlow 2.6s ease-in-out infinite}
 }
+.dl-btn{ justify-self:start }
