@@ -502,3 +502,234 @@ body .eyebrow.hot{background:#E0161B;color:#fff}
 
 /* hero video crop focus: when a portrait video is cropped on a wide screen, --vy picks which band stays visible (e.g. .hero{--vy:35%}) */
 .hv video{object-position:50% var(--vy,50%)}
+
+/* ============================================================
+   BIKE THEME — WHITE PAGE / RED HIGHLIGHTS / BLACK TEXT
+   Per issue #2: white background, red for important highlights,
+   black for body text and small inputs.
+   ============================================================ */
+body.bikemode{
+  --pg:#FFFFFF;
+  --tx:#0A0A0A;
+  --tm:#555555;
+  --ln:#E5E5E5;
+  --ac:#E0161B;      /* red = highlights only */
+  --acf:#FFFFFF;
+  --ach:#B3121A;
+  --pn:#F7F7F7;
+  --hd:rgba(255,255,255,.94);
+  --ol:#E0161B;
+}
+body.bikemode:not(.home){ background:#FFFFFF; }
+
+/* failed-photo fallbacks go light, not dark red */
+.bikemode .g0{--g:linear-gradient(140deg,#FFE8E8,#FFD1D1 50%,#FFF5F5)}
+.bikemode .g1{--g:linear-gradient(200deg,#FFDDDD,#FFC2C2 55%,#FFF0F0)}
+.bikemode .g2{--g:linear-gradient(160deg,#FFD6D6,#FFB8B8 55%,#FFF2F2)}
+
+/* header: logo/nav must go black on white — they were forced white before */
+body.bikemode .logo{ color:var(--tx); }
+body.bikemode .logo img{ filter:brightness(0); }
+body.bikemode nav a{ color:var(--tx); }
+body.bikemode nav a.on,
+body.bikemode nav a:hover{ background:var(--ac); color:#fff; }
+/* …but keep white while the header floats over the hero video */
+body.bikemode.home:not(.scrolled) .logo{ color:#fff; }
+body.bikemode.home:not(.scrolled) .logo img{ filter:brightness(0) invert(1); }
+body.bikemode.home:not(.scrolled) nav a{ color:#fff; }
+body.bikemode .lk img{ filter:brightness(0); }
+
+/* back pill + trip-style switcher */
+body.bikemode .back{
+  background:rgba(255,255,255,.94);
+  color:var(--tx);
+  border:1px solid var(--ln);
+}
+body.bikemode .mode{
+  background:#FFFFFF;
+  border:1px solid var(--ln);
+}
+body.bikemode .mode a{ color:var(--tx); }
+body.bikemode .mode a.on{ background:var(--ac); color:#fff; }
+
+/* photo cards keep their dark overlay (white text on photo stays readable) */
+.bikemode .tcard,
+.bikemode .tcard.hot{
+  border:2px solid rgba(255,255,255,.6);
+  box-shadow:0 18px 48px rgba(224,22,27,.16),0 4px 0 rgba(0,0,0,.08);
+}
+.bikemode .tcard .eyebrow,
+.bikemode .tcard.hot .eyebrow{ background:var(--ac); color:#fff; }
+
+/* marquee tape: red band, white type */
+.bikemode .tape{ background:var(--ac); color:#fff; }
+.bikemode .tape span::after{ color:#fff; }
+
+/* itinerary: white cards on the white page */
+.bikemode .stop{
+  background:#FFFFFF;
+  border:1px solid var(--ln);
+  border-radius:18px;
+  padding:1rem 1.1rem;
+  margin-bottom:1rem;
+  box-shadow:0 10px 28px rgba(0,0,0,.05);
+}
+.bikemode .stop::before{ background:#fff; border-color:#D0D0D0; }
+.bikemode .stop.hit::before{ background:var(--ac); border-color:var(--ac); }
+.bikemode .stop small,
+.bikemode .stop p{ color:var(--tm); }
+.bikemode .stop h3{ color:var(--tx); }
+.bikemode .road{ border-left-color:#E0E0E0; }
+.bikemode .road::before{ background:var(--ac); }
+.bikemode .bike{ color:var(--tx); }
+.bikemode .bike svg{ filter:drop-shadow(0 4px 10px rgba(224,22,27,.25)); }
+
+/* calendar: white card, red selected days */
+.bikemode .cal{
+  background:#FFFFFF;
+  border:1px solid var(--ln);
+  border-radius:24px;
+  box-shadow:0 14px 40px rgba(0,0,0,.05);
+}
+.bikemode .calf{
+  background:#FFFFFF;
+  border:1px solid var(--ln);
+  color:var(--tx);
+  box-shadow:none;
+}
+.bikemode .calf .cl{ color:var(--tm); }
+.bikemode .cal.open .calf{ border-color:var(--ac); }
+.bikemode .calpop{
+  background:#FFFFFF;
+  border:1px solid var(--ln);
+  box-shadow:0 24px 60px rgba(0,0,0,.12);
+}
+.bikemode .calh button{ border-color:var(--ln); color:var(--tx); }
+.bikemode .calg .d{ color:var(--tx); }
+.bikemode .calg .d.in{ background:rgba(224,22,27,.12); }
+.bikemode .calg .d.s,
+.bikemode .calg .d.e{ background:var(--ac); color:#fff; }
+.bikemode .calg .d.today::after{ background:var(--ac); }
+.bikemode .calg .d.s.today::after,
+.bikemode .calg .d.e.today::after{ background:#fff; }
+.bikemode .calsum,
+.bikemode .calsum b{ color:var(--tx); }
+.bikemode .clr{ color:var(--ac); }
+
+/* booking panel */
+.bikemode .pick{
+  background:#FFFFFF;
+  border:1px solid var(--ln);
+  box-shadow:0 12px 34px rgba(224,22,27,.08);
+}
+.bikemode .pick h3,
+.bikemode .qty{ color:var(--tx); }
+.bikemode .qty div{ background:#F0F0F0; }
+.bikemode .qty button{ background:var(--ac); color:#fff; }
+.bikemode .chips span{
+  background:#F0F0F0;
+  border:1px solid var(--ln);
+  color:var(--tx);
+}
+
+/* “how we ride” numbered list */
+.bikemode .pil ol{
+  background:#FFFFFF;
+  border:1px solid var(--ln);
+  box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+.bikemode .pil li{ border-top-color:var(--ln); }
+.bikemode .pil p{ color:var(--tm); }
+
+/* sticky reserve bar */
+.bikemode .rbar{
+  background:rgba(255,255,255,.96);
+  border-color:var(--ln);
+  box-shadow:0 -10px 30px rgba(0,0,0,.08);
+}
+.bikemode .rbar .price{ color:var(--ac); }
+.bikemode .rbar .price small{ color:var(--tm); }
+
+/* footer on white */
+body.bikemode footer{
+  background:#FFFFFF;
+  color:var(--tm);
+  border-top:1px solid var(--ln);
+}
+
+/* misc contrast fixes for the light page */
+body.bikemode em,
+body.bikemode .sec em{
+  background:linear-gradient(transparent 62%,rgba(224,22,27,.18) 62%);
+  color:inherit;
+}
+.bikemode .cb,
+.bikemode .sec .cb{ color:var(--tx); border-color:var(--tx); }
+.bikemode .cb:hover,
+.bikemode .sec .cb:hover{ background:var(--ac); border-color:var(--ac); color:#fff; }
+.bikemode .msg{ color:var(--ac); }
+.bikemode .msg.err{ color:#B5482A; }
+.bikemode .no li::before{ color:#B5482A; }
+/* ── issue #1: page wouldn't scroll to the end on some phones ────────── */
+
+/* 1. clip instead of hidden: stops horizontal overflow without making
+      <html> a scroll container (the thing that broke height calc)       */
+html{scroll-behavior:smooth;overflow-x:clip;-webkit-text-size-adjust:100%}
+/* fallback for browsers without `clip` (Safari < 16): keep old behaviour  */
+@supports not (overflow-x:clip){
+  body{overflow-x:hidden}
+}
+
+/* 2. reserve room for the fixed rbar + fab on trip pages                */
+body.trip .tbody{padding-bottom:calc(9rem + 120px + env(safe-area-inset-bottom))}
+body.trip footer{padding-bottom:calc(5rem + 120px + env(safe-area-inset-bottom))}
+
+/* 3. scroll-padding keeps scroll-into-view (calendar, anchor links)
+      from parking content behind the fixed bars                         */
+html{scroll-padding-top:calc(56px + env(safe-area-inset-top));
+     scroll-padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+     /* ── issue #3: bike itinerary cards get a red glowing border ─────────── */
+
+.bikemode .stop{
+  background:#FFFFFF;
+  border:2px solid var(--ac);                        /* red border */
+  border-radius:18px;
+  padding:1rem 1.1rem;
+  margin-bottom:1rem;
+  box-shadow:
+    0 0 0 1px rgba(224,22,27,.10),                   /* tight inner ring */
+    0 0 22px rgba(224,22,27,.28),                    /* the glow */
+    0 12px 30px rgba(0,0,0,.06);                     /* soft lift */
+  transition:box-shadow .35s ease, border-color .35s ease;
+}
+
+/* the dot on the road: red ring to match the card */
+.bikemode .stop::before{
+  background:#FFFFFF;
+  border-color:var(--ac);
+  box-shadow:0 0 10px rgba(224,22,27,.45);
+  transition:background .3s, border-color .3s, box-shadow .3s;
+}
+
+/* the stop the bike has already ridden past: brighter, filled dot, stronger glow */
+.bikemode .stop.hit{
+  border-color:var(--ac);
+  box-shadow:
+    0 0 0 1px rgba(224,22,27,.22),
+    0 0 34px rgba(224,22,27,.55),
+    0 12px 30px rgba(0,0,0,.07);
+}
+.bikemode .stop.hit::before{
+  background:var(--ac);
+  border-color:var(--ac);
+  box-shadow:0 0 14px rgba(224,22,27,.75);
+}
+
+/* gentle pulse on the active card so the eye lands on it while scrolling */
+@media (prefers-reduced-motion:no-preference){
+  @keyframes stopGlow{
+    0%,100%{box-shadow:0 0 0 1px rgba(224,22,27,.22),0 0 30px rgba(224,22,27,.45),0 12px 30px rgba(0,0,0,.07)}
+    50%    {box-shadow:0 0 0 1px rgba(224,22,27,.35),0 0 42px rgba(224,22,27,.68),0 12px 30px rgba(0,0,0,.07)}
+  }
+  .bikemode .stop.hit{animation:stopGlow 2.6s ease-in-out infinite}
+}

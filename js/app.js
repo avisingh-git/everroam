@@ -193,23 +193,23 @@ function bikeHome() {
     ["Pace over racing", "Rest stops, photo stops and zero heroics."],
     ["A proper briefing", "Day one starts with a briefing, then we ride together."]];
   return `
-  <section class="hero bk" data-bg="#8A0B11">
+  <section class="hero bk" data-bg="#FFFFFF">
     <div class="hv ph g2"><video autoplay muted loop playsinline preload="metadata" poster="media/bike-hero-poster.jpg">${heroSrc("bike-hero")}</video></div>
     <div class="lane" aria-hidden="true">${BIKE}</div>
     <div class="hc"><div class="cap"><span class="eyebrow">Everroam \u00B7 On two wheels</span><h1>Same roads. Ridden loud.</h1></div>
       <button class="cue" type="button" aria-label="Scroll down">Scroll</button></div></section>
   <div class="after">
-  <section class="sec clip" data-bg="#9B0D14"><div class="tape" aria-hidden="true"><div>${tape}</div></div>
+  <section class="sec clip" data-bg="#FAFAFA"><div class="tape" aria-hidden="true"><div>${tape}</div></div>
     <div class="wrap"><p class="stmt wr">${words("Mountain passes, empty highways and a backup vehicle always behind you. Bring the nerve, we will bring the rest.")}</p></div>${strip}</section>
-  <section class="sec" data-bg="#B3121A"><div class="wrap"><span class="eyebrow">Bike trips</span><h2 style="margin-top:1rem">Pick your <em>ride</em></h2>
+  <section class="sec" data-bg="#F7F7F7"><div class="wrap"><span class="eyebrow">Bike trips</span><h2 style="margin-top:1rem">Pick your <em>ride</em></h2>
     <div class="cctl"><button class="cb" data-cr="-1" aria-label="Previous">\u2190</button><button class="cb" data-cr="1" aria-label="Next">\u2192</button></div>
     <div class="cr trs" tabindex="0" aria-label="Bike trips">${TRIPS.map(bcard).join("")}</div></div></section>
-  <section class="sec pil" data-bg="#7A0A10"><div class="wrap"><span class="eyebrow">How we ride</span><h2 style="margin-top:1rem">Built for <em>riders</em>, and for first timers.</h2>
+  <section class="sec pil" data-bg="#FAFAFA"><div class="wrap"><span class="eyebrow">How we ride</span><h2 style="margin-top:1rem">Built for <em>riders</em>, and for first timers.</h2>
     <ol>${FACTS.map((p, i) => `<li class="rv" style="--d:${i * .08}s"><b>0${i + 1}</b><div><h3>${p[0]}</h3><p>${p[1]}</p></div></li>`).join("")}</ol></div></section>
-  <section class="sec help" data-bg="#A10E14"><div class="wrap rv"><h2>Never ridden in the <em>mountains</em>?</h2>
+  <section class="sec help" data-bg="#FFFFFF"><div class="wrap rv"><h2>Never ridden in the <em>mountains</em>?</h2>
     <p class="sub">Tell us your riding experience. We will match you to the right trip.</p>
     <a class="btn" href="${wa("Hi Everroam! I have a question about the bike trips.")}" target="_blank" rel="noopener">${WAI}Talk to a ride lead</a></div></section>
-  <section class="sec fin" data-bg="#6E0910"><div class="wrap rv"><img class="mark" src="media/emblem-white.png" alt="">
+  <section class="sec fin" data-bg="#F7F7F7"><div class="wrap rv"><img class="mark" src="media/emblem.png" alt="">
     <h2>Ready to <em>ride</em>?</h2><div class="acts"><a class="btn" href="${wa("Hi Everroam! I want to join a bike trip.")}" target="_blank" rel="noopener">${WAI}Message us</a><a class="btn line" href="#/">Prefer four wheels?</a></div></div></section></div>`;
 }
 
