@@ -1,5 +1,5 @@
 // Digits only, with country code. Replace with the real number.
-const WA_NUMBER = "+917407009700";
+const WA_NUMBER = "+917047009700";
 
 // PLACEHOLDER content: edit prices, dates, routes and itineraries.
 // live:false shows a waitlist button instead of Reserve.
