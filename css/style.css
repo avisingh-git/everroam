@@ -734,3 +734,97 @@ html{scroll-padding-top:calc(56px + env(safe-area-inset-top));
   .bikemode .stop.hit{animation:stopGlow 2.6s ease-in-out infinite}
 }
 .dl-btn{ justify-self:start }
+/* ── itinerary download button + hero CTA ────────────────────────────── */
+.dl-btn{ justify-self:start; gap:.65rem }
+.dl-btn svg{ filter:drop-shadow(0 2px 6px rgba(0,0,0,.18)) }
+
+.hero-cta-btn{
+  margin-top:.6rem;
+  min-height:44px;
+  padding:.5rem 1.2rem;
+  font-size:.92rem;
+  gap:.4rem;
+}
+.hero-cta-btn:hover{ transform:translateY(-1px) }
+@media (prefers-reduced-motion:reduce){ .hero-cta-btn:hover{ transform:none } }
+.rbar .price small:first-child{
+  display:block;
+  font:500 .68rem var(--m);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--tm);
+  margin-bottom:.05rem;
+}
+.rbar .price{ display:flex; flex-direction:column; line-height:1.15 }
+.rbar .price small + :not(small){ margin-top:0 }
+/* ── room & pricing table ───────────────────────────────────────────── */
+
+.pricing{ display:grid; gap:1rem }
+
+.pt{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  border:2px solid var(--ac);                       /* outer accent frame */
+  border-radius:20px;
+  overflow:hidden;
+  background:var(--pn);
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+
+.pt tr td{
+  padding:clamp(.9rem,3.2vw,1.2rem) clamp(1rem,4vw,1.35rem);
+  border-top:2px solid color-mix(in srgb,var(--ac) 40%,transparent);  /* row divider */
+  vertical-align:middle;
+}
+.pt tr:first-child td{ border-top:0 }
+
+/* zebra: every other row gets a faint accent tint */
+.pt tr:nth-child(even) td{
+  background:color-mix(in srgb,var(--ac) 6%,transparent);
+}
+
+/* best-value row: stronger tint + left accent bar */
+.pt tr.best td{
+  background:color-mix(in srgb,var(--ac) 14%,transparent);
+}
+.pt tr.best td:first-child{
+  position:relative;
+  box-shadow:inset 4px 0 0 var(--ac);
+}
+
+.pt-share{
+  font-weight:500;
+  color:var(--tx);
+  font-size:1.02rem;
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  flex-wrap:wrap;
+}
+.pt-badge{
+  font:500 .62rem var(--m);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  background:var(--ac);
+  color:var(--acf);
+  padding:.22rem .55rem;
+  border-radius:999px;
+  line-height:1.4;
+}
+.pt-desc{
+  color:var(--tm);
+  font-size:.88rem;
+  margin-top:.2rem;
+}
+
+/* price column: right-aligned + vertical divider to the label column */
+.pt-price{
+  text-align:right;
+  font:700 clamp(1.1rem,4.5vw,1.28rem) var(--d);
+  color:var(--ac);
+  letter-spacing:-.02em;
+  white-space:nowrap;
+  border-left:2px solid color-mix(in srgb,var(--ac) 40%,transparent);
+}
+.pt tr.best .pt-price{ font-size:clamp(1.22rem,5vw,1.42rem) }

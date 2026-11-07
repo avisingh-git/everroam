@@ -8,7 +8,32 @@ const rid = () => Math.random().toString(36).slice(2, 5).toUpperCase();
 const ref = (t, b) => `EV-${SRC}-${t.code}${b.code}-${rid()}`;
 const img = f => `--img:url('${new URL(`media/${f}`, document.baseURI).href}')`;
 const title = t => (document.title = t ? `${t} | Everroam` : "Everroam, the journey never ends");
+const minP = p => Array.isArray(p.pricing) && p.pricing.length
+  ? Math.min(...p.pricing.map(x => x.price)) : (p.price || 0);
+const roomLabel = n =>
+  n === 1 ? "Single room" : n === 2 ? "Twin sharing" :
+  n === 3 ? "Triple sharing" : n === 4 ? "Quad sharing" : `${n} sharing`;
+const roomDesc = n => n === 1 ? "A room to yourself"
+  : `Share with ${n - 1} other traveller${n - 1 > 1 ? "s" : ""}`;
+
+const priceTable = t => {
+  if (!Array.isArray(t.pricing) || !t.pricing.length) return "";
+  const min = minP(t), rows = [...t.pricing].sort((a, b) => a.sharing - b.sharing);
+  const showBadge = rows.length > 1;
+  return `<div class="pricing"><h2>Room &amp; pricing</h2>
+    <table class="pt"><tbody>${rows.map(p => {
+      const best = showBadge && p.price === min;
+      return `<tr${best ? ' class="best"' : ''}>
+        <td class="pt-label">
+          <div class="pt-share">${roomLabel(p.sharing)}${best ? ' <span class="pt-badge">Best value</span>' : ''}</div>
+          <div class="pt-desc">${roomDesc(p.sharing)}</div>
+        </td>
+        <td class="pt-price">${inr(p.price)}</td>
+      </tr>`;
+    }).join("")}</tbody></table></div>`;
+};
 const WAI = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path style="fill:var(--hs,#1EBE5A)" d="M7.5 6.5H10L11 9 9.6 10.2C10.4 11.8 12.2 13.6 13.8 14.4L15 13 17.5 14V16.5C17.5 17.1 17 17.6 16.4 17.6 11.2 17.3 6.7 12.8 6.4 7.6 6.4 7 6.9 6.5 7.5 6.5Z"/></svg>';
+const DL_ICON = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="flex:none"><circle cx="12" cy="12" r="11" fill="var(--ac,#34D186)"/><path d="M12 6.5v7.5m-3-3L12 14l3-3M7.5 17.5h9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 let cur = "", sel = { b: 0, q: 2, a: null, e: null }, bike = false, ride = null;
 const iso = (y, m, d) => `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
@@ -56,7 +81,7 @@ const vid = n => {
     order.map(s => `<source data-src="media/${n}${s}.mp4" type="video/mp4">`).join("") + `</video>`;
 };
 const card = (t, i) => `<a class="tcard ph g${i % 3}" style="${img(t.slug + ".jpg")}" href="#/trips/${t.slug}">${vid(t.slug)}
-  <span class="eyebrow">${t.live ? t.days + " days" : "Coming soon"}</span><h3>${t.name}</h3><p>${t.tag}</p></a>`;
+  <span class="eyebrow">${t.live ? t.days + " days" : "Coming soon"}</span><h3>${t.name}</h3><p>${t.live ? "Starting from " + inr(minP(t)) + " · " + t.tag : t.tag}</p></a>`;
 const page = (eb, h, body) => `<section class="pg"><div class="wrap"><span class="eyebrow">${eb}</span><h1>${h}</h1>${body}</div></section>`;
 
 /* ---------- views ----------
@@ -76,7 +101,8 @@ function home() {
   return `
   <section class="hero" data-bg="#030705">
     <div class="hv ph g0"><video autoplay muted loop playsinline preload="metadata" poster="media/hero-poster.jpg">${heroSrc("hero")}</video></div>
-    <div class="hc"><div class="cap"><span class="eyebrow">Small groups \u00B7 Big trips</span><h1>The journey never ends.</h1></div>
+<div class="hc"><div class="cap"><span class="eyebrow">Small groups \u00B7 Big trips</span><h1>The journey never ends.</h1>
+  <a class="btn hero-cta-btn" href="#/trips">All trips <span aria-hidden="true">\u2192</span></a></div>
       <button class="cue" type="button" aria-label="Scroll down">Scroll</button></div></section>
   <div class="after">
   <section class="sec" data-bg="#050E09">
@@ -134,17 +160,18 @@ function trip(slug) {
     ${modeSw(t.slug, false)}
     <h1>${t.name}</h1><p class="sub">${t.blurb}</p></div></div>
   <div class="wrap tbody">
-<a class="btn ghost dl-btn" href="media/Everroam-${t.name}.pdf" download="Everroam-${t.name}.pdf">\u2B07 Download itinerary</a>    <div class="chips">${t.highlights.map(h => `<span>${h}</span>`).join("")}</div>
+    <div class="chips">${t.highlights.map(h => `<span>${h}</span>`).join("")}</div>
     ${calCard()}
     ${t.live ? `<div class="pick"><div class="qty"><span>Travellers</span><div><button type="button" data-q="-1" aria-label="Fewer">\u2212</button><b id="qn">2</b><button type="button" data-q="1" aria-label="More">+</button></div></div></div>` : ""}
     <div><h2>Day by day</h2>${t.itinerary.map((d, k) =>
       `<details${k === 0 ? " open" : ""}><summary><small>${d[0]}</small>${d[1]}</summary><p>${d[2]}</p></details>`).join("")}</div>
-    <div class="two"><div><h2>Included</h2><ul class="tick">${t.inc.map(x => `<li>${x}</li>`).join("")}</ul></div>
-      <div><h2>Not included</h2><ul class="tick no">${t.exc.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
+      <a class="btn ghost dl-btn" href="media/Everroam-${t.name}.pdf" download="Everroam-${t.name}.pdf">\u2B07 Download itinerary</a>
+      ${priceTable(t)}
     <div><h2>Gallery</h2><div class="gal">${[1, 2, 3, 4].map(n => `<div class="ph g${(i + n) % 3} rv" style="${img(t.slug + "-" + n + ".jpg")}"></div>`).join("")}</div></div>
-  </div>
-  <div class="rbar"><div class="price">${inr(t.price)}<small>per person</small></div>
-    <a class="btn" id="rwa" href="${wa(msg(t, t.batches[0], 2))}" target="_blank" rel="noopener">${WAI}${t.live ? "Reserve" : "Join waitlist"}</a></div>`;
+    <div class="two"><div><h2>Included</h2><ul class="tick">${t.inc.map(x => `<li>${x}</li>`).join("")}</ul></div>
+      <div><h2>Not included</h2><ul class="tick no">${t.exc.map(x => `<li>${x}</li>`).join("")}</ul></div>
+<div class="rbar"><div class="price"><small>Starting from</small>${inr(minP(t))}<small>per person</small></div>
+    <a class="btn" id="rwa" href="${wa(msg(t, t.batches[0], 2))}" target="_blank" rel="noopener">${WAI}${t.live ? "Book Now" : "Join waitlist"}</a></div>`;
 }
 
 function plan() {
@@ -180,7 +207,7 @@ function nf() { title("Not found"); return page("404", "Lost the <em>trail</em>"
 const BIKE = '<svg class="bk" viewBox="0 0 244 140" aria-hidden="true"><g class="wh"><circle cx="196" cy="100" r="31" fill="none" stroke="currentColor" stroke-width="8"/><circle cx="196" cy="100" r="35.5" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="2.4 2"/><circle cx="196" cy="100" r="24" fill="none" stroke="currentColor" stroke-width="2"/><path d="M173.0 100.0L219.0 100.0M176.1 88.5L215.9 111.5M184.5 80.1L207.5 119.9M196.0 77.0L196.0 123.0M207.5 80.1L184.5 119.9M215.9 88.5L176.1 111.5" stroke="currentColor" stroke-width="1.3"/><circle cx="196" cy="100" r="5" fill="currentColor"/></g><g class="wh"><circle cx="46" cy="104" r="27" fill="none" stroke="currentColor" stroke-width="8"/><circle cx="46" cy="104" r="31.5" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="2.4 2"/><circle cx="46" cy="104" r="20" fill="none" stroke="currentColor" stroke-width="2"/><path d="M27.0 104.0L65.0 104.0M29.5 94.5L62.5 113.5M36.5 87.5L55.5 120.5M46.0 85.0L46.0 123.0M55.5 87.5L36.5 120.5M62.5 94.5L29.5 113.5" stroke="currentColor" stroke-width="1.3"/><circle cx="46" cy="104" r="5" fill="currentColor"/></g><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M126 104L42 86" stroke-width="8"/><path d="M15 86A36 36 0 0 1 64 73" stroke-width="4"/><path d="M157 79A44 44 0 0 1 231 73M228 70L238 78" stroke-width="6"/><path d="M168 34L190 84" stroke-width="5"/><path d="M186 78L196 100" stroke-width="8"/><path d="M169 31L152 24L140 24" stroke-width="4"/><path d="M140 24L131 24" stroke-width="6"/><path d="M135 17L152 15L156 27" stroke-width="3"/><path d="M150 24L146 10" stroke-width="2.5"/><path d="M166 48L112 60M164 52L148 98M112 62L58 102M118 108L46 104" stroke-width="4"/><path d="M104 66L110 102" stroke-width="6" stroke-dasharray="2.2 1.6" stroke-linecap="butt"/><path d="M16 62L66 58" stroke-width="4"/><path d="M26 62L36 86M56 58L54 84" stroke-width="3"/><path d="M166 44C152 34 122 34 106 52" stroke-width="3"/><path d="M160 66C170 88 164 110 146 120L108 120" stroke-width="4"/><path d="M124 76C110 80 106 100 114 110L128 114" stroke-width="4"/><path d="M106 124H150" stroke-width="5"/></g><g fill="currentColor"><g transform="rotate(12 132 98)"><rect x="121" y="74" width="26" height="3" rx="1"/><rect x="121" y="80" width="26" height="3" rx="1"/><rect x="121" y="86" width="26" height="3" rx="1"/><path d="M126 70H142V96H126Z"/><path d="M122 63H146V71H122Z"/></g><path d="M110 96H146Q151 96 151 101V112H108V100Q108 96 110 96Z"/><path d="M104 58C104 42 134 38 160 44L168 56C158 62 128 64 108 62Z"/><path d="M62 60C68 54 100 54 112 58L110 64L64 66C60 64 60 62 62 60Z"/><circle cx="183" cy="42" r="11"/><circle cx="14" cy="62" r="3"/></g><circle cx="186" cy="42" r="6.5" fill="#FFF1E0"/><path style="stroke:var(--acc,none)" d="M110 48C124 44 144 46 160 50" fill="none" stroke-width="2.4" stroke-linecap="round"/></svg>';
 const modeSw = (slug, bk) => `<div class="mode" role="group" aria-label="Trip style"><a class="${bk ? "" : "on"}" href="#/trips/${slug}">Road trip</a><a class="${bk ? "on" : ""}" href="#/bike/trips/${slug}">Bike trip</a></div>`;
 const bcard = (t, i) => `<a class="tcard hot ph g${(i + 1) % 3}" style="${img(t.slug + "-bike.jpg")}" href="#/bike/trips/${t.slug}">${vid(t.slug + "-bike")}
-  <span class="eyebrow">${t.bike.live ? t.bike.days + " days" : "Coming soon"}</span><h3>${t.name}</h3><p>${t.bike.live ? "From " + inr(t.bike.price) : "Join the waitlist"}</p></a>`;
+  <span class="eyebrow">${t.bike.live ? t.bike.days + " days" : "Coming soon"}</span><h3>${t.name}</h3><p>${t.bike.live ? "Starting From " + inr(minP(t.bike)) : "Join the waitlist"}</p></a>`;
 
 function bikeHome() {
   title("Bike trips");
@@ -223,16 +250,17 @@ function btrip(slug) {
     ${modeSw(t.slug, true)}
     <h1>${t.name}</h1><p class="sub">${b.blurb}</p></div></div>
   <div class="wrap tbody">
-<a class="btn ghost dl-btn" href="media/Everroam-${t.name}-biking.pdf" download="Everroam-${t.name}-biking.pdf">\u2B07 Download itinerary</a>   <div class="chips">${b.highlights.map(h => `<span>${h}</span>`).join("")}</div>
+   <div class="chips">${b.highlights.map(h => `<span>${h}</span>`).join("")}</div>
     ${calCard()}
     ${b.live ? `<div class="pick"><div class="qty"><span>Riders</span><div><button type="button" data-q="-1" aria-label="Fewer">\u2212</button><b id="qn">2</b><button type="button" data-q="1" aria-label="More">+</button></div></div></div>` : ""}
     <div><h2>The ride, day by day</h2><div class="ride" id="ride"><div class="road"><div class="bike">${BIKE}</div></div>
       ${b.itinerary.map(d => `<article class="stop"><small>${d[0]} \u00B7 ~${d[3]} km</small><h3>${d[1]}</h3><p>${d[2]}</p></article>`).join("")}</div></div>
+      <a class="btn ghost dl-btn" href="media/Everroam-${t.name}-biking.pdf" download="Everroam-${t.name}-biking.pdf">\u2B07 Download itinerary</a>
+      ${priceTable(b)}
+    <div><h2>Gallery</h2><div class="gal">${[1, 2, 3, 4].map(n => `<div class="ph g${(i + n) % 3} rv" style="${img(t.slug + "-bike-" + n + ".jpg")}"></div>`).join("")}</div></div>
     <div class="two"><div><h2>Included</h2><ul class="tick">${b.inc.map(x => `<li>${x}</li>`).join("")}</ul></div>
       <div><h2>Not included</h2><ul class="tick no">${b.exc.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
-    <div><h2>Gallery</h2><div class="gal">${[1, 2, 3, 4].map(n => `<div class="ph g${(i + n) % 3} rv" style="${img(t.slug + "-bike-" + n + ".jpg")}"></div>`).join("")}</div></div>
-  </div>
-  <div class="rbar"><div class="price">${inr(b.price)}<small>per rider</small></div>
+  <div class="rbar"><div class="price"><small>Starting from</small>${inr(minP(b))}<small>per rider</small></div>
     <a class="btn" id="rwa" href="${wa(msg(bt, b.batches[0], 2))}" target="_blank" rel="noopener">${WAI}${b.live ? "Reserve" : "Join waitlist"}</a></div>`;
 }
 
