@@ -828,3 +828,91 @@ html{scroll-padding-top:calc(56px + env(safe-area-inset-top));
   border-left:2px solid color-mix(in srgb,var(--ac) 40%,transparent);
 }
 .pt tr.best .pt-price{ font-size:clamp(1.22rem,5vw,1.42rem) }
+/* ===== bike landing: "night ride" (all classes start with bl-) ===== */
+.bl{--red:#FF2B2B;--bone:#F3EFE8;--smoke:#A3A3A9;--ink:#0B0B0D;--s1:#151518;--ln:#2A2A2F;background:var(--ink);color:var(--bone);font:400 1.06rem/1.5 'Barlow',var(--b);overflow:hidden}
+.bl h1,.bl h2,.bl h3{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:800;font-style:italic;text-transform:uppercase;line-height:.9;letter-spacing:0;color:inherit}
+.bl em{font:inherit;background:none;padding:0;color:var(--red)}
+.bl p{margin:0}
+.bl-l{font:600 .8rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--smoke)}
+.bl .lt{color:var(--bone)}
+.bl h2{font-size:clamp(2.8rem,13vw,6rem);margin-top:.7rem}
+.bl-btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 1.25rem;background:var(--red);color:var(--ink);text-decoration:none;transform:skewX(-10deg);transition:transform .2s,background .2s}
+.bl-btn span{display:inline-block;transform:skewX(10deg);font:800 italic 1.15rem/1 'Barlow Condensed',sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.bl-btn:hover{background:var(--bone);transform:skewX(-10deg) translateX(4px)}
+.bl-btn.o{background:var(--s1);color:var(--bone)}.bl-btn.o:hover{background:var(--bone);color:var(--ink)}
+.bl :focus-visible{outline:3px solid var(--bone);outline-offset:4px}
+.bl-hero{position:relative;min-height:max(680px,100svh);display:flex;flex-direction:column;overflow:hidden;padding-top:calc(56px + env(safe-area-inset-top) + 1.6rem)}
+.bl-hc{position:relative;z-index:4}
+.bl-hero h1{font-size:clamp(3.4rem,16.8vw,9rem);margin:.8rem 0 1rem}
+.bl-sub{max-width:36ch;color:#D8D5CE;font-size:1.15rem}
+.bl-acts{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.4rem}
+.bl-st{list-style:none;padding:.9rem 0 0;margin:1.4rem 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;border-top:1px solid #3A3A40}
+.bl-st b{display:block;font:800 italic 2.1rem/1 'Barlow Condensed',sans-serif;text-transform:uppercase}
+.bl-sc{position:relative;height:300px;margin-top:auto}
+.bl-sun{position:absolute;left:58%;bottom:80px;width:205px;height:205px;margin-left:-102px;border-radius:50%;background:var(--red);transform:translateY(calc(var(--sy,0)*.3px))}
+.bl-rg{position:absolute;left:0;right:0;bottom:0}
+.bl-rg.a{height:215px;background:#26262B;clip-path:polygon(0 70%,12% 46%,24% 62%,38% 28%,52% 55%,66% 18%,80% 50%,92% 34%,100% 58%,100% 100%,0 100%);transform:translateY(calc(var(--sy,0)*.12px))}
+.bl-rg.b{height:130px;background:#151518;clip-path:polygon(0 58%,18% 30%,34% 58%,50% 22%,70% 62%,86% 36%,100% 54%,100% 100%,0 100%)}
+.bl-rd{position:absolute;left:0;right:0;bottom:0;height:64px;background:var(--ink);z-index:3}
+.bl-rd::before{content:"";position:absolute;left:0;right:0;top:30px;height:4px;background:repeating-linear-gradient(90deg,var(--bone) 0 26px,transparent 26px 52px);animation:blrd .9s linear infinite}
+.bl-bike{position:absolute;left:7%;bottom:30px;width:200px;color:var(--bone);--acc:var(--red);z-index:4}
+.bl-svg{width:100%;height:auto;display:block}
+.bl-bike .wh{transform-box:fill-box;transform-origin:center;animation:blsp .55s linear infinite}
+@keyframes blrd{to{background-position:-52px 0}}@keyframes blsp{to{transform:rotate(360deg)}}@keyframes blmq{to{transform:translateX(-50%)}}@keyframes blmr{from{transform:translateX(-50%)}to{transform:none}}
+.bl-haz{height:16px;background:repeating-linear-gradient(135deg,var(--red) 0 14px,var(--ink) 14px 28px)}
+.bl-tape{background:var(--red);color:var(--ink);transform:rotate(-2.2deg);margin:2rem -12px 0;overflow:hidden;white-space:nowrap;padding:.6rem 0;position:relative;z-index:2}
+.bl-tape.rev{background:var(--ink);color:var(--ink);transform:rotate(1.8deg);margin:-1.1rem -12px 1rem;border-block:2px solid var(--red)}
+.bl-tape.rev span{-webkit-text-stroke:1.5px var(--bone)}
+.bl-tape>div{display:inline-block;animation:blmq 26s linear infinite}.bl-tape.rev>div{animation-name:blmr}
+.bl-tape span{font:800 italic 1.9rem/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;margin:0 .9rem}
+.bl-tape span.x{opacity:.45}
+.bl-sec{padding:4rem 0}
+.bl-cards{display:grid;gap:1.25rem;margin-top:1.8rem}
+.bl-card{position:relative;min-height:620px;display:flex;overflow:hidden;background:var(--s1);border-top:4px solid var(--red)}
+.bl-card::before{content:"";position:absolute;inset:0;background:var(--img) center/cover,var(--g);filter:grayscale(1) contrast(1.1) brightness(.75);transition:transform .8s}
+.bl-card:hover::before{transform:scale(1.05)}
+.bl-card .cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1) brightness(.75)}
+.bl-card::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(11,11,13,.65),rgba(11,11,13,.4) 30%,rgba(11,11,13,.96) 72%)}
+.bl-cs{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;gap:.75rem;padding:1.25rem;width:100%}
+.bl-top{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:auto}
+.bl-chip{background:var(--bone);color:var(--ink);font:700 .8rem 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:.3rem .6rem}
+.bl-card h3{font-size:clamp(4rem,20vw,5.2rem)}.bl-card p{color:#D8D5CE;font-size:1rem}
+.bl-nm{display:flex;gap:1.8rem}.bl-nm b{display:block;font:800 italic 2.9rem/1 'Barlow Condensed',sans-serif;color:var(--red);font-variant-numeric:tabular-nums}.bl-nm i{font-style:inherit}
+.bl-bt{display:flex;justify-content:space-between;align-items:flex-end;gap:.8rem;flex-wrap:wrap;border-top:1px solid #3A3A40;padding-top:.9rem}
+.bl-pr{display:block;font:800 italic 2.1rem/1 'Barlow Condensed',sans-serif}
+.bl-fx{list-style:none;padding:0;margin:1.8rem 0 0;display:grid}
+.bl-fx li{display:flex;gap:1.1rem;align-items:flex-start;padding:1.4rem 0;border-top:1px solid var(--ln)}
+.bl-fx li>b{font:800 italic 4rem/.9 'Barlow Condensed',sans-serif;color:transparent;-webkit-text-stroke:2px var(--red);min-width:5.2rem}
+.bl-fx h3{font-size:2.1rem;margin-bottom:.4rem}.bl-fx p{color:var(--smoke)}
+.bl-rt{list-style:none;padding:0 0 0 1.6rem;margin:1.8rem 0 2rem;border-left:3px solid var(--red)}
+.bl-rt li{position:relative;display:grid;gap:.5rem;padding:1.4rem 0}
+.bl-rt li::before{content:"";position:absolute;left:-2.25rem;top:1.9rem;width:15px;height:15px;background:var(--ink);border:3px solid var(--red);border-radius:50%}
+.bl-rk b{display:block;font:800 italic 3.5rem/1 'Barlow Condensed',sans-serif}.bl-rk small{font-size:.4em;letter-spacing:.1em;color:var(--smoke)}
+.bl-rt h3{font-size:2.1rem;margin-bottom:.3rem}.bl-rt p{color:var(--smoke)}
+.bl-pn{background:var(--s1);border-left:6px solid var(--red);padding:1.8rem 1.4rem;display:grid;gap:1rem;justify-items:start}
+.bl-pn p{color:#D8D5CE;max-width:40ch}
+.bl-fin{position:relative;padding:5rem 0 6rem;overflow:hidden}
+.bl-fin::before{content:attr(data-w);position:absolute;right:-2%;bottom:-.18em;font:800 italic 45vw/1 'Barlow Condensed',sans-serif;color:transparent;-webkit-text-stroke:2px var(--ln);pointer-events:none}
+.bl-fin .wrap{position:relative}
+@media (min-width:900px){
+.bl-btn{padding:0 1.8rem}.bl-btn span{font-size:1.25rem}
+.bl-hero{min-height:max(760px,100svh);padding-top:calc(68px + 3rem)}.bl-hero h1{font-size:clamp(5rem,9.8vw,11rem)}.bl-sub{font-size:1.3rem}.bl-st{max-width:540px}
+.bl-sc{position:absolute;left:0;right:0;bottom:0;height:540px;margin:0}.bl-sun{left:auto;right:11%;margin:0;width:440px;height:440px;bottom:100px}
+.bl-bike{width:340px;left:10%;bottom:34px}.bl-rd{height:76px}.bl-rd::before{top:36px}
+.bl-rg.a{height:310px}.bl-rg.b{height:195px}
+.bl-tape span{font-size:2.8rem}
+.bl-sec{padding:6rem 0}.bl-fin{padding:8rem 0 9rem}
+.bl-cards{grid-template-columns:repeat(3,minmax(0,1fr))}.bl-card{min-height:700px}
+.bl-fx{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:3.5rem}
+.bl-rt li{grid-template-columns:230px 1fr;gap:1.8rem}
+.bl-pn{padding:3rem 2.8rem}}
+@media (prefers-reduced-motion:reduce){.bl-rd::before,.bl-bike .wh,.bl-tape>div{animation:none}.bl-sun,.bl-rg.a{transform:none}.bl-card::before{transition:none}}
+/* bike landing only (#/bike): dark theme + header. Other bike pages keep the white "issue #2" theme above. */
+body.bikeland.bikemode{--pg:#0B0B0D;--tx:#F3EFE8;--tm:#A3A3A9;--ln:#2A2A2F;--ac:#FF2B2B;--acf:#0B0B0D;--pn:#151518;--hd:rgba(11,11,13,.92);background:#0B0B0D}
+body.bikeland.bikemode .logo{color:#F3EFE8}body.bikeland.bikemode .logo img{filter:brightness(0) invert(1)}
+body.bikeland.bikemode #menu{background:var(--ac);color:var(--acf)}
+body.bikeland.bikemode nav{background:#0B0B0D;border-color:#2A2A2F}
+body.bikeland.bikemode nav a{color:#F3EFE8}body.bikeland.bikemode nav a.on,body.bikeland.bikemode nav a:hover{background:var(--ac);color:var(--acf)}
+body .bl em,body.bikemode .bl em{background:none;color:var(--red);padding:0}
+body.bikeland.bikemode footer{background:#0B0B0D;color:#A3A3A9;border-color:#2A2A2F}body.bikeland.bikemode footer a{color:#A3A3A9}
+.bl-sec{scroll-margin-top:56px}

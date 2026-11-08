@@ -64,7 +64,7 @@ const GROUPS = [
 // Bike version of every trip. PLACEHOLDER content (prices, dates, km): edit freely.
 // itinerary rows: [label, title, text, km]
 const BIKE_TRIPS = {
- tawang:{days:8, price:42500, grade:"Moderate to hard", route:"Guwahati, Bomdila, Tawang",
+ tawang:{photo:"tawang-bike-card.jpg", days:8, price:42500, grade:"Moderate to hard", route:"Guwahati, Bomdila, Tawang",
   blurb:"Sela Pass, long open roads and a monastery at the end of the line, all on two wheels.",
   batches:[{label:"Spring ride",dates:"6–13 Apr",code:"B2604"}],
   highlights:["Sela Pass on two wheels","Backup vehicle follows","Rider briefing on day one"],
@@ -75,7 +75,7 @@ const BIKE_TRIPS = {
    ["Day 5–6","The long way back","Retrace the road with a bonfire night on the way.",250],
    ["Day 7–8","Back to Guwahati","Last ride, last chai, bikes handed back.",300]],
   inc:["Bike and fuel plan","Stays and breakfast","Riding lead and backup vehicle","Permits"], exc:["Travel to Guwahati","Riding gear","Lunches and dinners","Personal expenses"]},
- bhutan:{days:7, price:52000, grade:"Moderate", route:"Phuentsholing, Thimphu, Paro",
+ bhutan:{photo:"bhutan-bike-card.jpg", days:7, price:52000, grade:"Moderate", route:"Phuentsholing, Thimphu, Paro",
   blurb:"Prayer-flag passes and smooth mountain roads, ridden at a pace that lets you look around.",
   batches:[{label:"February ride",dates:"13–19 Feb",code:"B2702"}],
   highlights:["Dochula Pass","Paro valley","Backup vehicle follows"],
@@ -86,7 +86,7 @@ const BIKE_TRIPS = {
    ["Day 5","Tiger\u2019s Nest day","Ride to the trailhead, then hike. Bikes rest.",30],
    ["Day 6–7","Return","Back to the border for the goodbye dinner.",190]],
   inc:["Bike and fuel plan","Stays and breakfast","Riding lead and backup vehicle","Permits and entry fees"], exc:["Travel to Phuentsholing","Riding gear","Lunches and dinners","Personal expenses"]},
- anini:{days:7, price:39500, grade:"Hard", route:"Dibrugarh, Roing, Anini", live:false,
+ anini:{photo:"anini-bike-card.jpg", days:7, price:39500, grade:"Hard", route:"Dibrugarh, Roing, Anini", live:false,
   blurb:"Remote roads, river crossings and a destination few riders reach. Dates open soon.",
   batches:[{label:"Waitlist",dates:"Dates soon",code:"B0000"}],
   highlights:["River crossings","Remote mountain roads","Village homestays"],
@@ -95,5 +95,24 @@ const BIKE_TRIPS = {
    ["Day 4–5","Roing to Anini","The remote stretch, with a homestay night on the way.",190],
    ["Day 6–7","Anini and back","A slow day, then the ride out.",200]],
   inc:["Bike and fuel plan","Stays and breakfast","Riding lead and backup vehicle","Permits"], exc:["Travel to Dibrugarh","Riding gear","Lunches and dinners","Personal expenses"]}
+};
+// ===== Bike landing page (#/bike): every word and number on it comes from here =====
+// Trip cards read BIKE_TRIPS above: photo (media/ file), days, grade, price, blurb, batches. km is added up from itinerary rows [label,title,text,km], or set km:1234 on a trip to override.
+// Use <em>word</em> for the red word in a headline.
+const BIKE_PAGE = {
+  hero: { eyebrow: "Everroam \u00B7 On two wheels", line1: "Same roads.", line2: "Ridden loud.",
+    sub: "Mountain passes, empty highways and a backup vehicle always behind you. Bring the nerve, we will bring the rest.",
+    cta: "See the rides", cta2: "Message us", wa: "Hi Everroam! I want to join a bike trip." },
+  stats: [["3", "routes"], ["7\u20138", "days each"], ["Always", "backup vehicle"]],   // [big word, small label]
+  tape: ["Ride", "Roam", "Repeat"],
+  rides: { eyebrow: "Bike trips", h: "Pick your <em>ride</em>", cta: "See the ride", waitlist: "Join waitlist" },
+  facts: { eyebrow: "How we ride", h: "Built for <em>riders</em>, and for first timers.", items: [
+    ["Bikes sorted", "A ride that fits you, serviced and ready on day one."],
+    ["Never alone on the road", "A lead rides ahead and a backup vehicle follows, always."],
+    ["Pace over racing", "Rest stops, photo stops and zero heroics."],
+    ["A proper briefing", "Day one starts with a briefing, then we ride together."]] },
+  itin: { slug: "tawang", h: "The ride, <em>day by day</em>", cta: "Full itinerary and dates" },   // rows come from that trip's bike itinerary
+  help: { h: "Never ridden in the <em>mountains</em>?", sub: "Tell us your riding experience. We will match you to the right trip.", cta: "Talk to a ride lead", wa: "Hi Everroam! I have a question about the bike trips." },
+  fin: { h: "Ready to <em>ride</em>?", mark: "RIDE", cta: "Message us", wa: "Hi Everroam! I want to join a bike trip.", alt: "Prefer four wheels?" }
 };
 TRIPS.forEach(t => (t.bike = { live: t.live, ...BIKE_TRIPS[t.slug] }));

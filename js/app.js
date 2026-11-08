@@ -209,35 +209,34 @@ const modeSw = (slug, bk) => `<div class="mode" role="group" aria-label="Trip st
 const bcard = (t, i) => `<a class="tcard hot ph g${(i + 1) % 3}" style="${img(t.slug + "-bike.jpg")}" href="#/bike/trips/${t.slug}">${vid(t.slug + "-bike")}
   <span class="eyebrow">${t.bike.live ? t.bike.days + " days" : "Coming soon"}</span><h3>${t.name}</h3><p>${t.bike.live ? "Starting From " + inr(minP(t.bike)) : "Join the waitlist"}</p></a>`;
 
+const bikeKm = b => b.km || b.itinerary.reduce((n, r) => n + (r[3] || 0), 0);
+const bikeCard = (t, i) => { const b = t.bike, k = bikeKm(b), R = BIKE_PAGE.rides, bt = b.batches && b.batches[0];
+  return `<article class="bl-card g${(i + 1) % 3} rv" style="${img(b.photo || t.slug + "-bike.jpg")};--d:${i * .08}s">${vid(t.slug + "-bike")}
+  <div class="bl-cs"><div class="bl-top"><span class="bl-chip">${b.grade}</span><span class="bl-l lt">${b.live && bt ? bt.label + " \u00B7 " + bt.dates : "Dates soon"}</span></div>
+  <h3>${t.name}</h3><p>${b.blurb}</p>
+  <div class="bl-nm"><div><b data-n="${b.days}">${b.days}</b><span class="bl-l">days</span></div><div><b>~<i data-n="${k}">${k.toLocaleString("en-IN")}</i></b><span class="bl-l">km</span></div></div>
+  <div class="bl-bt"><div><span class="bl-l">From</span><b class="bl-pr">${inr(minP(b))}</b><span class="bl-l">per rider</span></div>
+  <a class="bl-btn" href="#/bike/trips/${t.slug}"><span>${b.live ? R.cta : R.waitlist}</span></a></div></div></article>`; };
+
 function bikeHome() {
   title("Bike trips");
-  const AR = ["3/4", "1/1", "4/5", "4/3", "3/4", "1/1", "4/5", "3/4"];
-  const strip = `<div class="strip" aria-hidden="true"><div>${[0, 1].map(() => AR.map((r, i) =>
-    `<span class="ph g${i % 3}" style="${img("bike-strip-" + (1 + i) + ".jpg")};--ar:${r}"></span>`).join("")).join("")}</div></div>`;
-  const tape = Array(8).fill(["Ride", "Roam", "Repeat"]).flat().map(w => `<span>${w}</span>`).join("");
-  const FACTS = [["Bikes sorted", "A ride that fits you, serviced and ready on day one."],
-    ["Never alone on the road", "A lead rides ahead and a backup vehicle follows, always."],
-    ["Pace over racing", "Rest stops, photo stops and zero heroics."],
-    ["A proper briefing", "Day one starts with a briefing, then we ride together."]];
-  return `
-  <section class="hero bk" data-bg="#FFFFFF">
-    <div class="hv ph g2"><video autoplay muted loop playsinline preload="metadata" poster="media/bike-hero-poster.jpg">${heroSrc("bike-hero")}</video></div>
-    <div class="lane" aria-hidden="true">${BIKE}</div>
-    <div class="hc"><div class="cap"><span class="eyebrow">Everroam \u00B7 On two wheels</span><h1>Same roads. Ridden loud.</h1></div>
-      <button class="cue" type="button" aria-label="Scroll down">Scroll</button></div></section>
-  <div class="after">
-  <section class="sec clip" data-bg="#FAFAFA"><div class="tape" aria-hidden="true"><div>${tape}</div></div>
-    <div class="wrap"><p class="stmt wr">${words("Mountain passes, empty highways and a backup vehicle always behind you. Bring the nerve, we will bring the rest.")}</p></div>${strip}</section>
-  <section class="sec" data-bg="#F7F7F7"><div class="wrap"><span class="eyebrow">Bike trips</span><h2 style="margin-top:1rem">Pick your <em>ride</em></h2>
-    <div class="cctl"><button class="cb" data-cr="-1" aria-label="Previous">\u2190</button><button class="cb" data-cr="1" aria-label="Next">\u2192</button></div>
-    <div class="cr trs" tabindex="0" aria-label="Bike trips">${TRIPS.map(bcard).join("")}</div></div></section>
-  <section class="sec pil" data-bg="#FAFAFA"><div class="wrap"><span class="eyebrow">How we ride</span><h2 style="margin-top:1rem">Built for <em>riders</em>, and for first timers.</h2>
-    <ol>${FACTS.map((p, i) => `<li class="rv" style="--d:${i * .08}s"><b>0${i + 1}</b><div><h3>${p[0]}</h3><p>${p[1]}</p></div></li>`).join("")}</ol></div></section>
-  <section class="sec help" data-bg="#FFFFFF"><div class="wrap rv"><h2>Never ridden in the <em>mountains</em>?</h2>
-    <p class="sub">Tell us your riding experience. We will match you to the right trip.</p>
-    <a class="btn" href="${wa("Hi Everroam! I have a question about the bike trips.")}" target="_blank" rel="noopener">${WAI}Talk to a ride lead</a></div></section>
-  <section class="sec fin" data-bg="#F7F7F7"><div class="wrap rv"><img class="mark" src="media/emblem.png" alt="">
-    <h2>Ready to <em>ride</em>?</h2><div class="acts"><a class="btn" href="${wa("Hi Everroam! I want to join a bike trip.")}" target="_blank" rel="noopener">${WAI}Message us</a><a class="btn line" href="#/">Prefer four wheels?</a></div></div></section></div>`;
+  const P = BIKE_PAGE, H = P.hero, ft = TRIPS.find(x => x.slug === P.itin.slug) || TRIPS[0], fb = ft.bike;
+  const tape = (rev) => `<div class="bl-tape${rev ? " rev" : ""}" aria-hidden="true"><div>${[0, 1].map(() => Array(4).fill(P.tape.map(w => `<span>${w}</span><span class="x">//</span>`).join("")).join("")).join("")}</div></div>`;
+  return `<div class="bl">
+  <section class="bl-hero"><div class="wrap bl-hc"><span class="bl-l lt">${H.eyebrow}</span>
+    <h1>${H.line1}<br><em>${H.line2}</em></h1><p class="bl-sub">${H.sub}</p>
+    <div class="bl-acts"><a class="bl-btn" href="#/bike" data-scroll="#bl-rides"><span>${H.cta}</span></a><a class="bl-btn o" href="${wa(H.wa)}" target="_blank" rel="noopener"><span>${H.cta2}</span></a></div>
+    <ul class="bl-st">${P.stats.map(x => `<li><b>${x[0]}</b><span class="bl-l">${x[1]}</span></li>`).join("")}</ul></div>
+    <div class="bl-sc" aria-hidden="true"><div class="bl-sun"></div><div class="bl-rg a"></div><div class="bl-rg b"></div><div class="bl-rd"></div><div class="bl-bike">${BIKE.replace('class="bk"', 'class="bl-svg"')}</div></div></section>
+  <div class="bl-haz" aria-hidden="true"></div>${tape(false)}${tape(true)}
+  <section class="bl-sec" id="bl-rides"><div class="wrap"><span class="bl-l">${P.rides.eyebrow}</span><h2>${P.rides.h}</h2><div class="bl-cards">${TRIPS.map(bikeCard).join("")}</div></div></section>
+  <section class="bl-sec"><div class="wrap"><span class="bl-l">${P.facts.eyebrow}</span><h2>${P.facts.h}</h2>
+    <ol class="bl-fx">${P.facts.items.map((f, i) => `<li class="rv" style="--d:${i * .08}s"><b>0${i + 1}</b><div><h3>${f[0]}</h3><p>${f[1]}</p></div></li>`).join("")}</ol></div></section>
+  <section class="bl-sec"><div class="wrap"><span class="bl-l">${ft.name} \u00B7 ${fb.days} days</span><h2>${P.itin.h}</h2>
+    <ol class="bl-rt">${fb.itinerary.map(d => `<li class="rv"><div class="bl-rk"><span class="bl-l">${d[0]}</span>${d[3] ? `<b>${d[3]}<small> km</small></b>` : ""}</div><div><h3>${d[1]}</h3><p>${d[2]}</p></div></li>`).join("")}</ol>
+    <a class="bl-btn" href="#/bike/trips/${ft.slug}"><span>${P.itin.cta}</span></a></div></section>
+  <section class="bl-sec"><div class="wrap"><div class="bl-pn rv"><h2>${P.help.h}</h2><p>${P.help.sub}</p><a class="bl-btn" href="${wa(P.help.wa)}" target="_blank" rel="noopener"><span>${P.help.cta}</span></a></div></div></section>
+  <section class="bl-fin" data-w="${P.fin.mark}"><div class="wrap rv"><h2>${P.fin.h}</h2><div class="bl-acts"><a class="bl-btn" href="${wa(P.fin.wa)}" target="_blank" rel="noopener"><span>${P.fin.cta}</span></a><a class="bl-btn o" href="#/"><span>${P.fin.alt}</span></a></div></div></section></div>`;
 }
 
 function btrip(slug) {
@@ -286,15 +285,21 @@ const ioV = new IntersectionObserver(es => es.forEach(e => {
   } else v.pause();
 }), { threshold: .3 });
 
+const ioN = new IntersectionObserver(es => es.forEach(e => {       // bike landing: trip-meter numbers roll up when a card scrolls in
+  if (!e.isIntersecting) return; ioN.unobserve(e.target);
+  if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  $$("[data-n]", e.target).forEach(el => { const to = +el.dataset.n, t0 = performance.now(); const f = t => { const p = clamp((t - t0) / 1000); el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString("en-IN"); if (p < 1) requestAnimationFrame(f); }; f(t0); });
+}), { threshold: .6 });
+
 function render() {
   const path = location.hash.replace(/^#/, "") || "/";
   document.body.classList.remove("trip", "menu");
-  const hm = path === "/" || path === "/bike";
+  const hm = path === "/";
   document.body.classList.toggle("bikemode", path === "/bike" || path.startsWith("/bike/"));
-  document.body.classList.toggle("home", hm);
+  document.body.classList.toggle("home", hm); document.body.classList.toggle("bikeland", path === "/bike");
   if (!hm) { secs = []; ["--bg", "--fg"].forEach(p => document.body.style.removeProperty(p)); document.body.classList.remove("scrolled"); }
   $("#menu").setAttribute("aria-expanded", "false");
-  cur = ""; bike = false; ride = null; ioS.disconnect(); ioV.disconnect();
+  cur = ""; bike = false; ride = null; ioS.disconnect(); ioV.disconnect(); ioN.disconnect();
   let v = nf, a = [];
   for (const [re, f] of routes) { const m = path.match(re); if (m) { v = f; a = m.slice(1); break; } }
   app.innerHTML = v(...a);
@@ -305,6 +310,7 @@ function render() {
   if (hm) colorSetup();
   rideSetup();
   $$(".cv").forEach(v => ioV.observe(v));
+  $$(".bl-nm").forEach(x => ioN.observe(x));
   $$(".cr").forEach(crFx);
 }
 addEventListener("hashchange", render);
@@ -442,4 +448,8 @@ document.addEventListener("click", async e => {
     window.open(url, "_blank", "noopener");   // file:// fallback: new tab, site stays put
   }
 });
+/* in-page scroll links (the router owns the URL hash, so a plain #anchor would change the route) */
+document.addEventListener("click", e => { const a = e.target.closest("[data-scroll]"); if (!a) return; e.preventDefault(); const t = $(a.dataset.scroll); if (t) t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth" }); });
+/* bike landing: the sun and ridges drift at different speeds as you scroll */
+addEventListener("scroll", () => { const h = $(".bl-hero"); if (h && scrollY < innerHeight * 1.2) requestAnimationFrame(() => h.style.setProperty("--sy", scrollY)); }, { passive: true });
 render();
