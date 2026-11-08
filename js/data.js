@@ -23,7 +23,7 @@ const TRIPS = [
   route:"Phuentsholing, Thimphu, Paro",
   blurb:"A country that measures happiness.",
   batches:[{label:"February batch",dates:"13–18 Feb",code:"2702"}],
-  highlights:["Tiger\u2019s Nest hike","Thimphu Night Life","Paro valley","Dochula Pass","Punakha Suspension Bridge","Chimi Lhakhang"],
+  highlights:["Tiger\u2019s Nest hike","Phobjikha Valley","Thimphu Night Life","Paro valley","Dochula Pass","Punakha Suspension Bridge","Chimi Lhakhang"],
   itinerary:[["Day 1","Phuentsholing","Land in Bagdogra, meet the team, start your transfer toward BhutanCross the border and wind up into the capital."],
    ["Day 2","Thimphu","Drive from Phuentsholing to Thimphu.Stop at Chuzom Bridge, where the Paro and Thimphu rivers meet below a mural of the King and Queen"],
    ["Day 3","Punakha","Check out and stop at the Buddha Dordenma. Drive on to Punakha via Dochula Pass, pausing for tea with Himalayan views. See the 108 Druk Wangyal Chortens. Walk the Punakha Suspension Bridge before heading back. Overnight in Punakha."],

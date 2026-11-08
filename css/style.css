@@ -916,3 +916,40 @@ body.bikeland.bikemode nav a{color:#F3EFE8}body.bikeland.bikemode nav a.on,body.
 body .bl em,body.bikemode .bl em{background:none;color:var(--red);padding:0}
 body.bikeland.bikemode footer{background:#0B0B0D;color:#A3A3A9;border-color:#2A2A2F}body.bikeland.bikemode footer a{color:#A3A3A9}
 .bl-sec{scroll-margin-top:56px}
+
+/* ── download button centered ─────────────────────────────────────── */
+.dl-btn{ justify-self:center }
+
+/* ── gallery: horizontal strip of equal photos ───────────────────── */
+.gal{
+  display:flex;
+  gap:.7rem;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding-bottom:.5rem;
+  scrollbar-width:none;
+}
+.gal::-webkit-scrollbar{display:none}
+.gal > div{
+  flex:0 0 clamp(160px, 44vw, 195px);
+  aspect-ratio:4/3;
+  border-radius:16px;
+  scroll-snap-align:start;
+}
+
+/* ── "more trips" rows at the bottom of itinerary pages ──────────── */
+.more{
+  display:grid;
+  gap:1.5rem;
+  padding-top:.5rem;
+}
+.more-sec{ display:grid; gap:.8rem }
+.more-sec h2{
+  font-size:clamp(1.5rem,6vw,2rem);
+  margin:0;
+}
+/* tighten the tail of itinerary pages */
+body.trip .tbody{ padding-bottom:calc(6rem + env(safe-area-inset-bottom)) }
+.more{ padding-top:0 }
+.more-sec:last-child .cr{ padding-bottom:0 }
+.tsec.bk{ padding-bottom:2rem }

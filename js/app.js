@@ -18,19 +18,15 @@ const roomDesc = n => n === 1 ? "A room to yourself"
 
 const priceTable = t => {
   if (!Array.isArray(t.pricing) || !t.pricing.length) return "";
-  const min = minP(t), rows = [...t.pricing].sort((a, b) => a.sharing - b.sharing);
-  const showBadge = rows.length > 1;
+  const rows = [...t.pricing].sort((a, b) => a.sharing - b.sharing);
   return `<div class="pricing"><h2>Room &amp; pricing</h2>
-    <table class="pt"><tbody>${rows.map(p => {
-      const best = showBadge && p.price === min;
-      return `<tr${best ? ' class="best"' : ''}>
+    <table class="pt"><tbody>${rows.map(p => `<tr>
         <td class="pt-label">
-          <div class="pt-share">${roomLabel(p.sharing)}${best ? ' <span class="pt-badge">Best value</span>' : ''}</div>
+          <div class="pt-share">${roomLabel(p.sharing)}</div>
           <div class="pt-desc">${roomDesc(p.sharing)}</div>
         </td>
         <td class="pt-price">${inr(p.price)}</td>
-      </tr>`;
-    }).join("")}</tbody></table></div>`;
+      </tr>`).join("")}</tbody></table></div>`;
 };
 const WAI = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path style="fill:var(--hs,#1EBE5A)" d="M7.5 6.5H10L11 9 9.6 10.2C10.4 11.8 12.2 13.6 13.8 14.4L15 13 17.5 14V16.5C17.5 17.1 17 17.6 16.4 17.6 11.2 17.3 6.7 12.8 6.4 7.6 6.4 7 6.9 6.5 7.5 6.5Z"/></svg>';
 const DL_ICON = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="flex:none"><circle cx="12" cy="12" r="11" fill="var(--ac,#34D186)"/><path d="M12 6.5v7.5m-3-3L12 14l3-3M7.5 17.5h9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -155,6 +151,7 @@ function trip(slug) {
   if (i < 0) return nf();
   const t = TRIPS[i];
   title(t.name); cur = slug; sel = { b: 0, q: 2, a: null, e: null }; calReset(); document.body.classList.add("trip");
+  const others = TRIPS.filter(x => x.slug !== slug);
   return `
   <div class="thero ph g${i % 3}" style="${img(t.slug + ".jpg")}"><div class="wrap">
     ${modeSw(t.slug, false)}
@@ -165,13 +162,22 @@ function trip(slug) {
     ${t.live ? `<div class="pick"><div class="qty"><span>Travellers</span><div><button type="button" data-q="-1" aria-label="Fewer">\u2212</button><b id="qn">2</b><button type="button" data-q="1" aria-label="More">+</button></div></div></div>` : ""}
     <div><h2>Day by day</h2>${t.itinerary.map((d, k) =>
       `<details${k === 0 ? " open" : ""}><summary><small>${d[0]}</small>${d[1]}</summary><p>${d[2]}</p></details>`).join("")}</div>
-      <a class="btn ghost dl-btn" href="media/Everroam-${t.name}.pdf" download="Everroam-${t.name}.pdf">\u2B07 Download itinerary</a>
-      ${priceTable(t)}
+    <a class="btn ghost dl-btn" href="media/Everroam-${t.name}.pdf" download="Everroam-${t.name}.pdf">${DL_ICON} Download itinerary</a>
+    ${priceTable(t)}
     <div><h2>Gallery</h2><div class="gal">${[1, 2, 3, 4].map(n => `<div class="ph g${(i + n) % 3} rv" style="${img(t.slug + "-" + n + ".jpg")}"></div>`).join("")}</div></div>
     <div class="two"><div><h2>Included</h2><ul class="tick">${t.inc.map(x => `<li>${x}</li>`).join("")}</ul></div>
-      <div><h2>Not included</h2><ul class="tick no">${t.exc.map(x => `<li>${x}</li>`).join("")}</ul></div>
-<div class="rbar"><div class="price"><small>Starting from</small>${inr(minP(t))}<small>per person</small></div>
-    <a class="btn" id="rwa" href="${wa(msg(t, t.batches[0], 2))}" target="_blank" rel="noopener">${WAI}${t.live ? "Book Now" : "Join waitlist"}</a></div>`;
+      <div><h2>Not included</h2><ul class="tick no">${t.exc.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
+    <div class="more">
+      <section class="more-sec"><h2>More bike trips</h2>
+        <div class="cr trs" tabindex="0" aria-label="Bike trips">${others.map(bcard).join("")}</div>
+      </section>
+      <section class="more-sec"><h2>More road trips</h2>
+        <div class="cr trs" tabindex="0" aria-label="Road trips">${others.map(card).join("")}</div>
+      </section>
+    </div>
+  </div>
+  <div class="rbar"><div class="price"><small>Starting from</small>${inr(minP(t))}<small>per person</small></div>
+    <a class="btn" id="rwa" href="${wa(msg(t, t.batches[0], 2))}" target="_blank" rel="noopener">${WAI}${t.live ? "Reserve" : "Join waitlist"}</a></div>`;
 }
 
 function plan() {
@@ -244,21 +250,31 @@ function btrip(slug) {
   if (i < 0) return nf();
   const t = TRIPS[i], b = t.bike, bt = { ...t, ...b, kind: "bike trip" };
   title(t.name + " by bike"); cur = slug; bike = true; sel = { b: 0, q: 2, a: null, e: null }; calReset(); document.body.classList.add("trip");
+  const others = TRIPS.filter(x => x.slug !== slug);
   return `
   <div class="thero ph g${(i + 1) % 3}" style="${img(t.slug + "-bike.jpg")}"><div class="wrap">
     ${modeSw(t.slug, true)}
     <h1>${t.name}</h1><p class="sub">${b.blurb}</p></div></div>
   <div class="wrap tbody">
-   <div class="chips">${b.highlights.map(h => `<span>${h}</span>`).join("")}</div>
+    <div class="chips">${b.highlights.map(h => `<span>${h}</span>`).join("")}</div>
     ${calCard()}
     ${b.live ? `<div class="pick"><div class="qty"><span>Riders</span><div><button type="button" data-q="-1" aria-label="Fewer">\u2212</button><b id="qn">2</b><button type="button" data-q="1" aria-label="More">+</button></div></div></div>` : ""}
     <div><h2>The ride, day by day</h2><div class="ride" id="ride"><div class="road"><div class="bike">${BIKE}</div></div>
       ${b.itinerary.map(d => `<article class="stop"><small>${d[0]} \u00B7 ~${d[3]} km</small><h3>${d[1]}</h3><p>${d[2]}</p></article>`).join("")}</div></div>
-      <a class="btn ghost dl-btn" href="media/Everroam-${t.name}-biking.pdf" download="Everroam-${t.name}-biking.pdf">\u2B07 Download itinerary</a>
-      ${priceTable(b)}
+    <a class="btn ghost dl-btn" href="media/Everroam-${t.name}-biking.pdf" download="Everroam-${t.name}-biking.pdf">${DL_ICON} Download itinerary</a>
+    ${priceTable(b)}
     <div><h2>Gallery</h2><div class="gal">${[1, 2, 3, 4].map(n => `<div class="ph g${(i + n) % 3} rv" style="${img(t.slug + "-bike-" + n + ".jpg")}"></div>`).join("")}</div></div>
     <div class="two"><div><h2>Included</h2><ul class="tick">${b.inc.map(x => `<li>${x}</li>`).join("")}</ul></div>
       <div><h2>Not included</h2><ul class="tick no">${b.exc.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
+    <div class="more">
+      <section class="more-sec"><h2>More bike trips</h2>
+        <div class="cr trs" tabindex="0" aria-label="Bike trips">${others.map(bcard).join("")}</div>
+      </section>
+      <section class="more-sec"><h2>More road trips</h2>
+        <div class="cr trs" tabindex="0" aria-label="Road trips">${others.map(card).join("")}</div>
+      </section>
+    </div>
+  </div>
   <div class="rbar"><div class="price"><small>Starting from</small>${inr(minP(b))}<small>per rider</small></div>
     <a class="btn" id="rwa" href="${wa(msg(bt, b.batches[0], 2))}" target="_blank" rel="noopener">${WAI}${b.live ? "Reserve" : "Join waitlist"}</a></div>`;
 }
