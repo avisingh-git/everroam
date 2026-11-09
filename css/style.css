@@ -971,3 +971,24 @@ body.trip .tbody{ padding-bottom:calc(6rem + env(safe-area-inset-bottom)) }
 .more{ padding-top:0 }
 .more-sec:last-child .cr{ padding-bottom:0 }
 .tsec.bk{ padding-bottom:2rem }
+.more-sec .cr {
+  margin-inline: 0;
+  padding-inline: 0;
+}
+.pricing { overflow-x: auto }
+.pt { min-width: 0 }
+/* ── mobile overflow on itinerary pages: keep grid tracks inside the viewport ── */
+
+/* 1. force every single-column grid track to shrink to its container,
+      overriding the default `auto` sizing that grows to min-content */
+.tbody, .more, .more-sec, .pricing, .two {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* 2. pricing table can scroll INSIDE its own box instead of pushing the page wide */
+.pricing { overflow-x: auto }
+.pt { min-width: 0 }
+
+/* 3. more-trips carousels: don't bleed past the container (this was causing
+      the -1.25rem margin to make the track even wider) */
+.more-sec .cr { margin-inline: 0; padding-inline: 0 }
