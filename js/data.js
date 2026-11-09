@@ -111,8 +111,22 @@ const BIKE_PAGE = {
     ["Never alone on the road", "A lead rides ahead and a backup vehicle follows, always."],
     ["Pace over racing", "Rest stops, photo stops and zero heroics."],
     ["A proper briefing", "Day one starts with a briefing, then we ride together."]] },
-  itin: { slug: "tawang", h: "The ride, <em>day by day</em>", cta: "Full itinerary and dates" },   // rows come from that trip's bike itinerary
-  help: { h: "Never ridden in the <em>mountains</em>?", sub: "Tell us your riding experience. We will match you to the right trip.", cta: "Talk to a ride lead", wa: "Hi Everroam! I have a question about the bike trips." },
+  // "Find your ride": 3 taps -> best-matching trip + a WhatsApp message that carries the answers.
+  // pts = points each answer gives a trip, keyed by trip slug (missing = 0, negative = steer away). Highest total wins; ties go to the first trip.
+  match: { eyebrow: "Find your ride", h: "Not sure which <em>ride</em>?", sub: "Three taps. We match you to the right trip, and your answers go straight into the WhatsApp message.",
+    steps: [
+      { q: "How do you ride?", opts: [
+        { label: "Still learning", sub: "Mostly city and highway so far", pts: { bhutan: 2, anini: -1 } },
+        { label: "Weekend rider", sub: "Happy on twisties", pts: { tawang: 2, bhutan: 1 } },
+        { label: "Seasoned tourer", sub: "Long days, rough roads", pts: { anini: 2, tawang: 1 } }] },
+      { q: "How long can you get away?", opts: [
+        { label: "About a week", sub: "7 days", pts: { bhutan: 1, anini: 1 } },
+        { label: "A bit longer", sub: "8 days or more", pts: { tawang: 2 } }] },
+      { q: "What gets you out of bed?", opts: [
+        { label: "Passes and monasteries", pts: { tawang: 2 } },
+        { label: "Smooth roads and prayer flags", pts: { bhutan: 2 } },
+        { label: "Remote and rarely ridden", pts: { anini: 2 } }] }],
+    result: "Your ride", cta: "See the ride", cta2: "Message us", again: "Start over" },
   fin: { h: "Ready to <em>ride</em>?", mark: "RIDE", cta: "Message us", wa: "Hi Everroam! I want to join a bike trip.", alt: "Prefer four wheels?" }
 };
 TRIPS.forEach(t => (t.bike = { live: t.live, ...BIKE_TRIPS[t.slug] }));

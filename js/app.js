@@ -224,9 +224,19 @@ const bikeCard = (t, i) => { const b = t.bike, k = bikeKm(b), R = BIKE_PAGE.ride
   <div class="bl-bt"><div><span class="bl-l">From</span><b class="bl-pr">${inr(minP(b))}</b><span class="bl-l">per rider</span></div>
   <a class="bl-btn" href="#/bike/trips/${t.slug}"><span>${b.live ? R.cta : R.waitlist}</span></a></div></div></article>`; };
 
+const matchHTML = ans => { const M = BIKE_PAGE.match, n = ans.length, gears = M.steps.map((_, i) => `<i class="${i < n ? "done" : i === n ? "on" : ""}">${i + 1}</i>`).join("");
+  if (n < M.steps.length) { const st = M.steps[n];
+    return `<div class="bl-gear" aria-hidden="true"><i>N</i>${gears}</div><h3 class="bl-q">${st.q}</h3><div class="bl-opts">${st.opts.map((o, i) => `<button class="bl-opt" data-opt="${i}"><b>${o.label}</b>${o.sub ? `<span>${o.sub}</span>` : ""}</button>`).join("")}</div>${n ? `<button class="bl-back" data-back>\u2190 Back</button>` : ""}`; }
+  const sc = {}; ans.forEach((a, i) => { const pt = M.steps[i].opts[a].pts || {}; for (const k in pt) sc[k] = (sc[k] || 0) + pt[k]; });
+  const t = TRIPS.filter(x => x.bike).sort((x, y) => (sc[y.slug] || 0) - (sc[x.slug] || 0))[0], b = t.bike, km = bikeKm(b);
+  const msg = `Hi Everroam! I ride like this: ${ans.map((a, i) => M.steps[i].opts[a].label).join(" / ")}. The ${t.name} bike trip looks like my match. Can you tell me more?`;
+  return `<div class="bl-gear" aria-hidden="true"><i>N</i>${gears}<i class="on">GO</i></div><span class="bl-l">${M.result}</span><h3 class="bl-win">${t.name}</h3><p class="bl-wp">${b.blurb}</p>
+  <div class="bl-nm"><div><b data-n="${b.days}">${b.days}</b><span class="bl-l">days</span></div><div><b>~<i data-n="${km}">${km.toLocaleString("en-IN")}</i></b><span class="bl-l">km</span></div></div>
+  <div class="bl-acts"><a class="bl-btn" href="#/bike/trips/${t.slug}"><span>${M.cta}</span></a><a class="bl-btn o" href="${wa(msg)}" target="_blank" rel="noopener"><span>${M.cta2}</span></a></div><button class="bl-back" data-reset>${M.again}</button>`; };
+
 function bikeHome() {
   title("Bike trips");
-  const P = BIKE_PAGE, H = P.hero, ft = TRIPS.find(x => x.slug === P.itin.slug) || TRIPS[0], fb = ft.bike;
+  const P = BIKE_PAGE, H = P.hero;
   const tape = (rev) => `<div class="bl-tape${rev ? " rev" : ""}" aria-hidden="true"><div>${[0, 1].map(() => Array(4).fill(P.tape.map(w => `<span>${w}</span><span class="x">//</span>`).join("")).join("")).join("")}</div></div>`;
   return `<div class="bl">
   <section class="bl-hero"><div class="wrap bl-hc"><span class="bl-l lt">${H.eyebrow}</span>
@@ -236,12 +246,9 @@ function bikeHome() {
     <div class="bl-sc" aria-hidden="true"><div class="bl-sun"></div><div class="bl-rg a"></div><div class="bl-rg b"></div><div class="bl-rd"></div><div class="bl-bike">${BIKE.replace('class="bk"', 'class="bl-svg"')}</div></div></section>
   <div class="bl-haz" aria-hidden="true"></div>${tape(false)}${tape(true)}
   <section class="bl-sec" id="bl-rides"><div class="wrap"><span class="bl-l">${P.rides.eyebrow}</span><h2>${P.rides.h}</h2><div class="bl-cards">${TRIPS.map(bikeCard).join("")}</div></div></section>
+  <section class="bl-sec bl-mt"><div class="wrap"><span class="bl-l">${P.match.eyebrow}</span><h2>${P.match.h}</h2><p class="bl-sub">${P.match.sub}</p><div class="bl-mbox" id="bl-mbox" data-ans="[]" aria-live="polite">${matchHTML([])}</div></div></section>
   <section class="bl-sec"><div class="wrap"><span class="bl-l">${P.facts.eyebrow}</span><h2>${P.facts.h}</h2>
     <ol class="bl-fx">${P.facts.items.map((f, i) => `<li class="rv" style="--d:${i * .08}s"><b>0${i + 1}</b><div><h3>${f[0]}</h3><p>${f[1]}</p></div></li>`).join("")}</ol></div></section>
-  <section class="bl-sec"><div class="wrap"><span class="bl-l">${ft.name} \u00B7 ${fb.days} days</span><h2>${P.itin.h}</h2>
-    <ol class="bl-rt">${fb.itinerary.map(d => `<li class="rv"><div class="bl-rk"><span class="bl-l">${d[0]}</span>${d[3] ? `<b>${d[3]}<small> km</small></b>` : ""}</div><div><h3>${d[1]}</h3><p>${d[2]}</p></div></li>`).join("")}</ol>
-    <a class="bl-btn" href="#/bike/trips/${ft.slug}"><span>${P.itin.cta}</span></a></div></section>
-  <section class="bl-sec"><div class="wrap"><div class="bl-pn rv"><h2>${P.help.h}</h2><p>${P.help.sub}</p><a class="bl-btn" href="${wa(P.help.wa)}" target="_blank" rel="noopener"><span>${P.help.cta}</span></a></div></div></section>
   <section class="bl-fin" data-w="${P.fin.mark}"><div class="wrap rv"><h2>${P.fin.h}</h2><div class="bl-acts"><a class="bl-btn" href="${wa(P.fin.wa)}" target="_blank" rel="noopener"><span>${P.fin.cta}</span></a><a class="bl-btn o" href="#/"><span>${P.fin.alt}</span></a></div></div></section></div>`;
 }
 
@@ -466,6 +473,11 @@ document.addEventListener("click", async e => {
 });
 /* in-page scroll links (the router owns the URL hash, so a plain #anchor would change the route) */
 document.addEventListener("click", e => { const a = e.target.closest("[data-scroll]"); if (!a) return; e.preventDefault(); const t = $(a.dataset.scroll); if (t) t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth" }); });
+document.addEventListener("click", e => { const box = e.target.closest("#bl-mbox"), bt = box && e.target.closest("button"); if (!bt) return;
+  let ans = JSON.parse(box.dataset.ans);
+  if (bt.dataset.opt !== undefined) ans.push(+bt.dataset.opt); else if (bt.hasAttribute("data-back")) ans.pop(); else if (bt.hasAttribute("data-reset")) ans = []; else return;
+  box.dataset.ans = JSON.stringify(ans); box.innerHTML = matchHTML(ans); box.classList.remove("bl-in"); void box.offsetWidth; box.classList.add("bl-in");
+  const nm = $(".bl-nm", box); if (nm) ioN.observe(nm); (box.querySelector(".bl-opt,.bl-btn") || box).focus({ preventScroll: true }); });
 /* bike landing: the sun and ridges drift at different speeds as you scroll */
 addEventListener("scroll", () => { const h = $(".bl-hero"); if (h && scrollY < innerHeight * 1.2) requestAnimationFrame(() => h.style.setProperty("--sy", scrollY)); }, { passive: true });
 render();

@@ -884,28 +884,19 @@ html{scroll-padding-top:calc(56px + env(safe-area-inset-top));
 .bl-fx li{display:flex;gap:1.1rem;align-items:flex-start;padding:1.4rem 0;border-top:1px solid var(--ln)}
 .bl-fx li>b{font:800 italic 4rem/.9 'Barlow Condensed',sans-serif;color:transparent;-webkit-text-stroke:2px var(--red);min-width:5.2rem}
 .bl-fx h3{font-size:2.1rem;margin-bottom:.4rem}.bl-fx p{color:var(--smoke)}
-.bl-rt{list-style:none;padding:0 0 0 1.6rem;margin:1.8rem 0 2rem;border-left:3px solid var(--red)}
-.bl-rt li{position:relative;display:grid;gap:.5rem;padding:1.4rem 0}
-.bl-rt li::before{content:"";position:absolute;left:-2.25rem;top:1.9rem;width:15px;height:15px;background:var(--ink);border:3px solid var(--red);border-radius:50%}
-.bl-rk b{display:block;font:800 italic 3.5rem/1 'Barlow Condensed',sans-serif}.bl-rk small{font-size:.4em;letter-spacing:.1em;color:var(--smoke)}
-.bl-rt h3{font-size:2.1rem;margin-bottom:.3rem}.bl-rt p{color:var(--smoke)}
-.bl-pn{background:var(--s1);border-left:6px solid var(--red);padding:1.8rem 1.4rem;display:grid;gap:1rem;justify-items:start}
-.bl-pn p{color:#D8D5CE;max-width:40ch}
 .bl-fin{position:relative;padding:5rem 0 6rem;overflow:hidden}
 .bl-fin::before{content:attr(data-w);position:absolute;right:-2%;bottom:-.18em;font:800 italic 45vw/1 'Barlow Condensed',sans-serif;color:transparent;-webkit-text-stroke:2px var(--ln);pointer-events:none}
 .bl-fin .wrap{position:relative}
 @media (min-width:900px){
 .bl-btn{padding:0 1.8rem}.bl-btn span{font-size:1.25rem}
-.bl-hero{min-height:max(760px,100svh);padding-top:calc(68px + 3rem)}.bl-hero h1{font-size:clamp(5rem,9.8vw,11rem)}.bl-sub{font-size:1.3rem}.bl-st{max-width:540px}
-.bl-sc{position:absolute;left:0;right:0;bottom:0;height:540px;margin:0}.bl-sun{left:auto;right:11%;margin:0;width:440px;height:440px;bottom:100px}
+.bl-hero{min-height:max(760px,100svh);padding-top:calc(68px + 3rem);padding-bottom:280px}.bl-hero h1{font-size:clamp(5rem,9.8vw,11rem)}.bl-sub{font-size:1.3rem}.bl-st{max-width:540px}
+.bl-sc{position:absolute;left:0;right:0;bottom:0;height:540px;margin:0}.bl-sun{left:auto;right:11%;margin:0;width:min(440px,32vw);height:min(440px,32vw);bottom:100px}
 .bl-bike{width:340px;left:10%;bottom:34px}.bl-rd{height:76px}.bl-rd::before{top:36px}
 .bl-rg.a{height:310px}.bl-rg.b{height:195px}
 .bl-tape span{font-size:2.8rem}
 .bl-sec{padding:6rem 0}.bl-fin{padding:8rem 0 9rem}
 .bl-cards{grid-template-columns:repeat(3,minmax(0,1fr))}.bl-card{min-height:700px}
-.bl-fx{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:3.5rem}
-.bl-rt li{grid-template-columns:230px 1fr;gap:1.8rem}
-.bl-pn{padding:3rem 2.8rem}}
+.bl-fx{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:3.5rem}}
 @media (prefers-reduced-motion:reduce){.bl-rd::before,.bl-bike .wh,.bl-tape>div{animation:none}.bl-sun,.bl-rg.a{transform:none}.bl-card::before{transition:none}}
 /* bike landing only (#/bike): dark theme + header. Other bike pages keep the white "issue #2" theme above. */
 body.bikeland.bikemode{--pg:#0B0B0D;--tx:#F3EFE8;--tm:#A3A3A9;--ln:#2A2A2F;--ac:#FF2B2B;--acf:#0B0B0D;--pn:#151518;--hd:rgba(11,11,13,.92);background:#0B0B0D}
@@ -916,6 +907,33 @@ body.bikeland.bikemode nav a{color:#F3EFE8}body.bikeland.bikemode nav a.on,body.
 body .bl em,body.bikemode .bl em{background:none;color:var(--red);padding:0}
 body.bikeland.bikemode footer{background:#0B0B0D;color:#A3A3A9;border-color:#2A2A2F}body.bikeland.bikemode footer a{color:#A3A3A9}
 .bl-sec{scroll-margin-top:56px}
+/* find-your-ride matcher */
+.bl-mt{background:var(--s1);border-block:1px solid var(--ln)}
+.bl-mbox{margin-top:1.8rem;display:grid;gap:1.1rem;justify-items:start;align-content:start;min-height:440px}
+.bl-mbox.bl-in{animation:blin .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes blin{from{opacity:0;transform:translateY(14px) skewX(-3deg)}to{opacity:1;transform:none}}
+.bl-gear{display:flex;gap:.4rem}
+.bl-gear i{font:800 italic 1.1rem/1 'Barlow Condensed',sans-serif;min-width:2.3rem;height:2.3rem;padding:0 .4rem;display:grid;place-items:center;border:2px solid var(--ln);color:var(--smoke);transform:skewX(-10deg)}
+.bl-gear i.done{border-color:var(--red);color:var(--red)}.bl-gear i.on{background:var(--red);border-color:var(--red);color:var(--ink)}
+.bl-q{font-size:clamp(2.7rem,11vw,4.6rem)}
+.bl-opts{display:grid;gap:.8rem;width:100%}
+.bl-opt{text-align:left;background:var(--ink);color:var(--bone);border:2px solid var(--ln);padding:1rem 1.3rem;min-height:68px;cursor:pointer;display:grid;gap:.2rem;transform:skewX(-6deg);transition:transform .2s,border-color .2s,background .2s}
+.bl-opt>*{transform:skewX(6deg)}
+.bl-opt b{font:800 italic 1.7rem/1 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.03em}
+.bl-opt span{color:var(--smoke);font-size:.95rem}
+.bl-opt:hover,.bl-opt:focus-visible{border-color:var(--red);background:#1D1D21;transform:skewX(-6deg) translateX(6px)}
+.bl-back{background:none;border:0;padding:0;min-height:44px;color:var(--smoke);font:600 .85rem 'Barlow Condensed',sans-serif;letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
+.bl-back:hover{color:var(--bone)}
+.bl-win{font-size:clamp(5.4rem,28vw,11rem);color:var(--red)}
+.bl-wp{color:#D8D5CE;max-width:44ch}
+@media (min-width:900px){.bl-opts{grid-template-columns:repeat(3,minmax(0,1fr))}.bl-mbox{min-height:460px}}
+@media (prefers-reduced-motion:reduce){.bl-mbox.bl-in{animation:none}}
+/* short laptops: keep the whole poster (type + bike on the road) inside the first screen */
+@media (min-width:900px){.bl-sub{max-width:48ch}}
+@media (min-width:900px) and (max-height:960px){.bl-st{display:none}.bl-hero{padding-bottom:225px}.bl-hero h1{font-size:min(9.8vw,16vh)}.bl-bike{width:min(340px,36vh)}.bl-sun{bottom:90px}}
+.bl .bl-win{color:var(--red)}
+.bl-mt .bl-btn.o{background:var(--ink)}.bl-mt .bl-btn.o:hover{background:var(--bone)}
+.bl-mt h2+.bl-sub{margin-top:.9rem}
 
 /* ── download button centered ─────────────────────────────────────── */
 .dl-btn{ justify-self:center }
