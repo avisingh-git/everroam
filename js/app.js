@@ -111,8 +111,8 @@ function home() {
       <div class="cr trs" tabindex="0" aria-label="Trips">${TRIPS.map(card).join("")}</div></div></section>
 
   <section class="sec" data-bg="#030705"><div class="wrap">
-    <a class="bn ph fire" style="${img("bike-banner.jpg")}" href="#/bike">${BIKE}<span class="eyebrow">New \u00B7 On two wheels</span>
-      <h2>Same roads. <em>Two wheels.</em></h2><span class="btn">See bike trips</span></a></div></section>
+    <a class="bn2" href="#/bike"><div class="bn2-tx"><span class="bn2-tag">${BIKE_PAGE.promo.tag}</span><h2>${BIKE_PAGE.promo.line1}<br><em>${BIKE_PAGE.promo.line2}</em></h2><span class="bn2-btn"><span>${BIKE_PAGE.promo.cta}</span></span></div>
+      <div class="bn2-sc" aria-hidden="true"><i class="bn2-sun"></i><i class="bn2-rg a"></i><i class="bn2-rg b"></i><i class="bn2-rd"></i><div class="bn2-bike">${BIKE.replace('class="bk"', 'class="bl-svg"')}</div></div></a></div></section>
 
   <section class="sec help" data-bg="#08190F"><div class="wrap rv">
     <h2>Not sure <em>where</em> to go?</h2>

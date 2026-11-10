@@ -1047,4 +1047,31 @@ body.bikemode .calpop,body.bikemode .calpop *{--tx:#F3EFE8}body.bikemode .clr{co
 body.bikemode .stop.hit,body.bikemode .stop:hover{background:none;border:0;box-shadow:none;outline:0}
 body.bikemode .gal .ph{--g:linear-gradient(145deg,#1D1D21,#0B0B0D)}
 body.bikemode .btn,body.bikemode .dl-btn,body.bikemode .ride,body.bikemode .stop{box-shadow:none}
-body.bikemode .tcard{border-radius:0;box-shadow:none;border:0;border-top:4px solid #FF2B2B}
+body.bikemode .tcard{border-radius:0}
+
+/* itinerary pages: no red outline or glow on the "More trips" cards (bike or road) */
+.more .tcard,.more .tcard.hot,body.bikemode .more .tcard,body.bikemode .more .tcard.hot{border:0;box-shadow:none}
+/* home page: bike call-out card, night ride */
+.bn2{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:440px;overflow:hidden;background:#0B0B0D;color:#F3EFE8;text-decoration:none;isolation:isolate;clip-path:polygon(0 0,calc(100% - 30px) 0,100% 30px,100% 100%,0 100%)}
+.bn2:focus-visible{outline:3px solid #F3EFE8;outline-offset:-6px}
+.bn2-tx{position:relative;z-index:3;padding:1.4rem 1.3rem 0;display:grid;gap:.9rem;justify-items:start}
+.bn2-tag{background:#FF2B2B;color:#0B0B0D;font:700 .85rem/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:.45rem .75rem;transform:skewX(-10deg)}
+.bn2 h2{font:800 italic clamp(3.6rem,17vw,6.6rem)/.86 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase;letter-spacing:0;color:#F3EFE8;margin:0}
+.bn2 h2 em{font:inherit;color:#FF2B2B;background:none;padding:0}
+.bn2-btn{display:inline-flex;align-items:center;min-height:50px;padding:0 1.4rem;background:#FF2B2B;color:#0B0B0D;transform:skewX(-10deg);transition:transform .2s,background .2s}
+.bn2-btn span{display:inline-block;transform:skewX(10deg);font:800 italic 1.2rem/1 'Barlow Condensed',sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.bn2:hover .bn2-btn{background:#F3EFE8;transform:skewX(-10deg) translateX(5px)}
+.bn2-sc{position:relative;height:190px;margin-top:1.2rem}
+.bn2-sun{position:absolute;right:9%;bottom:62px;width:130px;height:130px;border-radius:50%;background:#FF2B2B}
+.bn2-rg{position:absolute;left:0;right:0;bottom:0}
+.bn2-rg.a{height:120px;background:#26262B;clip-path:polygon(0 70%,12% 46%,24% 62%,38% 28%,52% 55%,66% 18%,80% 50%,92% 34%,100% 58%,100% 100%,0 100%)}
+.bn2-rg.b{height:78px;background:#151518;clip-path:polygon(0 58%,18% 30%,34% 58%,50% 22%,70% 62%,86% 36%,100% 54%,100% 100%,0 100%)}
+.bn2-rd{position:absolute;left:0;right:0;bottom:0;height:44px;background:#0B0B0D;z-index:3}
+.bn2-rd::before{content:"";position:absolute;left:0;right:0;top:20px;height:3px;background:repeating-linear-gradient(90deg,#F3EFE8 0 20px,transparent 20px 40px);animation:blrd .9s linear infinite}
+.bn2-bike{position:absolute;left:6%;bottom:22px;width:136px;z-index:4;color:#F3EFE8;--acc:#FF2B2B}
+.bn2 .bl-svg{width:100%;height:auto;display:block}
+.bn2 .wh{transform-box:fill-box;transform-origin:center;animation:blsp .55s linear infinite}
+@media (min-width:900px){.bn2{min-height:500px}.bn2-tx{padding:2.6rem 2.8rem 0}.bn2-sc{height:250px}.bn2-sun{width:270px;height:270px;right:10%;bottom:70px}.bn2-rg.a{height:180px}.bn2-rg.b{height:115px}.bn2-rd{height:58px}.bn2-rd::before{top:27px}.bn2-bike{width:220px;bottom:28px}}
+@media (prefers-reduced-motion:reduce){.bn2-rd::before,.bn2 .wh{animation:none}}
+.more .tcard::before,.more .tcard.hot::before,body.bikemode .more .tcard::before{background:linear-gradient(transparent 35%,rgba(11,11,13,.92))}
+body .more .tcard.hot.ph{--g:linear-gradient(145deg,#1D1D21,#0B0B0D)}

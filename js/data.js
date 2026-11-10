@@ -103,6 +103,7 @@ const BIKE_PAGE = {
   hero: { eyebrow: "Everroam \u00B7 On two wheels", line1: "Same roads.", line2: "Ridden loud.",
     sub: "Mountain passes, empty highways and a backup vehicle always behind you. Bring the nerve, we will bring the rest.",
     cta: "See the rides", cta2: "Message us", wa: "Hi Everroam! I want to join a bike trip." },
+  promo: { tag: "New \u00B7 On two wheels", line1: "Same roads.", line2: "Two wheels.", cta: "See bike trips" },   // the call-out card on the home page
   stats: [["3", "routes"], ["7\u20138", "days each"], ["Always", "backup vehicle"]],   // [big word, small label]
   tape: ["Ride", "Roam", "Repeat"],
   rides: { eyebrow: "Bike trips", h: "Pick your <em>ride</em>", cta: "See the ride", waitlist: "Join waitlist" },
