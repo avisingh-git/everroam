@@ -1076,13 +1076,6 @@ body.bikemode .tcard{border-radius:0}
 .more .tcard::before,.more .tcard.hot::before,body.bikemode .more .tcard::before{background:linear-gradient(transparent 35%,rgba(11,11,13,.92))}
 body .more .tcard.hot.ph{--g:linear-gradient(145deg,#1D1D21,#0B0B0D)}
 .tcard.ph { background-clip: padding-box; }
-/* itinerary gallery: a plain grid (no horizontal scroller), so a finger on it always scrolls the page */
-.gal{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:140px;gap:.6rem;overflow:visible;scroll-snap-type:none;padding-bottom:0}
-.gal>div{flex:none;aspect-ratio:auto;scroll-snap-align:none;border-radius:16px}
-.gal>div:nth-child(1){grid-column:span 2;grid-row:span 2}.gal>div:nth-child(4){grid-column:span 2}
-@media (min-width:600px){.gal{grid-auto-rows:170px}}
-body.bikemode .gal>div{border-radius:0}
-
 /* home hero: one shared gutter for logo, hero text, Scroll cue and Menu, so everything lines up at every width */
 .hb{width:min(1180px,100% - 2.5rem)}
 .hero{padding-inline:max(1.25rem,calc((100% - 1180px)/2))}
@@ -1095,3 +1088,10 @@ body.home:not(.scrolled) #menu{background:var(--ac);color:var(--acf);min-height:
 /* bike itinerary hero: the huge name can never widen the page, even before the web font has loaded */
 body.bikemode .thero{overflow:hidden}
 body.bikemode .thero h1{max-width:100%;font-size:clamp(4rem,22vw,10rem)}
+/* gallery: keep it as a horizontal strip, but stop it from trapping vertical page scroll */
+.gal {
+  scroll-snap-type: x proximity;        /* softer: only snap if the gesture ends near a snap point */
+  overscroll-behavior-x: contain;       /* don't chain horizontal scroll to the page */
+  -webkit-overflow-scrolling: touch;    /* momentum scrolling on iOS */
+  touch-action: pan-y pan-x;            /* allow both axes (default, but explicit) */
+}
