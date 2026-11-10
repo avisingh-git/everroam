@@ -168,11 +168,11 @@ function trip(slug) {
     <div class="two"><div><h2>Included</h2><ul class="tick">${t.inc.map(x => `<li>${x}</li>`).join("")}</ul></div>
       <div><h2>Not included</h2><ul class="tick no">${t.exc.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
     <div class="more">
+          <section class="more-sec"><h2>More road trips</h2>
+        <div class="cr trs" tabindex="0" aria-label="Road trips">${others.map(card).join("")}</div>
+      </section>
       <section class="more-sec"><h2>More bike trips</h2>
         <div class="cr trs" tabindex="0" aria-label="Bike trips">${others.map(bcard).join("")}</div>
-      </section>
-      <section class="more-sec"><h2>More road trips</h2>
-        <div class="cr trs" tabindex="0" aria-label="Road trips">${others.map(card).join("")}</div>
       </section>
     </div>
   </div>
