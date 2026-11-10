@@ -899,13 +899,13 @@ html{scroll-padding-top:calc(56px + env(safe-area-inset-top));
 .bl-fx{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:3.5rem}}
 @media (prefers-reduced-motion:reduce){.bl-rd::before,.bl-bike .wh,.bl-tape>div{animation:none}.bl-sun,.bl-rg.a{transform:none}.bl-card::before{transition:none}}
 /* bike landing only (#/bike): dark theme + header. Other bike pages keep the white "issue #2" theme above. */
-body.bikeland.bikemode{--pg:#0B0B0D;--tx:#F3EFE8;--tm:#A3A3A9;--ln:#2A2A2F;--ac:#FF2B2B;--acf:#0B0B0D;--pn:#151518;--hd:rgba(11,11,13,.92);background:#0B0B0D}
-body.bikeland.bikemode .logo{color:#F3EFE8}body.bikeland.bikemode .logo img{filter:brightness(0) invert(1)}
-body.bikeland.bikemode #menu{background:var(--ac);color:var(--acf)}
-body.bikeland.bikemode nav{background:#0B0B0D;border-color:#2A2A2F}
-body.bikeland.bikemode nav a{color:#F3EFE8}body.bikeland.bikemode nav a.on,body.bikeland.bikemode nav a:hover{background:var(--ac);color:var(--acf)}
+body.bikemode{--pg:#0B0B0D;--tx:#F3EFE8;--tm:#A3A3A9;--ln:#2A2A2F;--ac:#FF2B2B;--acf:#0B0B0D;--pn:#151518;--hd:rgba(11,11,13,.92);background:#0B0B0D}
+body.bikemode .logo{color:#F3EFE8}body.bikemode .logo img{filter:brightness(0) invert(1)}
+body.bikemode #menu{background:var(--ac);color:var(--acf)}
+body.bikemode nav{background:#0B0B0D;border-color:#2A2A2F}
+body.bikemode nav a{color:#F3EFE8}body.bikemode nav a.on,body.bikemode nav a:hover{background:var(--ac);color:var(--acf)}
 body .bl em,body.bikemode .bl em{background:none;color:var(--red);padding:0}
-body.bikeland.bikemode footer{background:#0B0B0D;color:#A3A3A9;border-color:#2A2A2F}body.bikeland.bikemode footer a{color:#A3A3A9}
+body.bikemode footer{background:#0B0B0D;color:#A3A3A9;border-color:#2A2A2F}body.bikemode footer a{color:#A3A3A9}
 .bl-sec{scroll-margin-top:56px}
 /* find-your-ride matcher */
 .bl-mt{background:var(--s1);border-block:1px solid var(--ln)}
@@ -992,3 +992,59 @@ body.trip .tbody{ padding-bottom:calc(6rem + env(safe-area-inset-bottom)) }
 /* 3. more-trips carousels: don't bleed past the container (this was causing
       the -1.25rem margin to make the track even wider) */
 .more-sec .cr { margin-inline: 0; padding-inline: 0 }
+/* ===== bike trip pages: night ride (same tokens as the landing) ===== */
+body.bikemode{--line:#2A2A2F;--mut:#A3A3A9;background:#0B0B0D}
+body.bikemode h2,body.bikemode .tbody h3{font-family:'Barlow Condensed',Impact,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:0;line-height:.92;color:#F3EFE8}
+body.bikemode .tbody>div>h2,body.bikemode .two h2,body.bikemode .more h2{font-size:clamp(2.6rem,11vw,4.4rem);margin-bottom:1rem}
+body.bikemode .tbody>div>h2::before,body.bikemode .two h2::before,body.bikemode .more h2::before{content:"";display:inline-block;width:.55em;height:.13em;background:#FF2B2B;margin-right:.35em;vertical-align:.16em;transform:skewX(-20deg)}
+body.bikemode .thero.ph{background:#0B0B0D;color:#F3EFE8}
+body.bikemode .thero::before{background:var(--img) center/cover,var(--g);filter:grayscale(1) contrast(1.1) brightness(.7)}
+body.bikemode .thero::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(11,11,13,.7),rgba(11,11,13,.2) 35%,#0B0B0D)}
+body.bikemode .thero .wrap{z-index:2}
+body.bikemode .thero h1{font:800 italic clamp(4.6rem,24vw,10rem)/.84 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase;letter-spacing:0;color:#F3EFE8}
+body.bikemode .thero .sub{color:#D8D5CE;max-width:40ch}
+.bt-st{list-style:none;padding:0;margin:.4rem 0 0;display:flex;gap:1.7rem;flex-wrap:wrap}
+.bt-st b{display:block;font:800 italic 2.5rem/1 'Barlow Condensed',sans-serif;color:#FF2B2B;text-transform:uppercase}
+.bt-st span{font:600 .8rem 'Barlow Condensed',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#A3A3A9}
+body.bikemode .chips span{background:#151518;border:2px solid #2A2A2F;border-radius:0;color:#F3EFE8;font:600 .9rem 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:.5rem .9rem}
+body.bikemode .pick{background:#151518;border:1px solid #2A2A2F;border-left:6px solid #FF2B2B;border-radius:0;box-shadow:none}
+body.bikemode .qty{color:#F3EFE8}body.bikemode .qty div{background:#0B0B0D;border-radius:0}
+body.bikemode .qty button{background:#FF2B2B;color:#0B0B0D;border-radius:0}
+body.bikemode .ride{margin-top:1.4rem}
+body.bikemode .road{border-left:3px dashed #2A2A2F}body.bikemode .road::before{background:#FF2B2B}
+body.bikemode .bike{color:#F3EFE8;--acc:#FF2B2B}
+body.bikemode .stop{background:none;border:0;border-radius:0;box-shadow:none;padding:0 0 2.4rem;margin:0}
+body.bikemode .stop::before{top:.35rem;background:#0B0B0D;border:3px solid #FF2B2B}body.bikemode .stop.hit::before{background:#FF2B2B;border-color:#FF2B2B}
+body.bikemode .stop small{font:600 .8rem 'Barlow Condensed',sans-serif;letter-spacing:.18em;color:#A3A3A9}
+.stop .km{display:block;font:800 italic 3.6rem/1 'Barlow Condensed',sans-serif;color:#F3EFE8;margin:.15rem 0 .25rem}.stop .km i{font-size:.38em;letter-spacing:.1em;font-style:normal;color:#A3A3A9}
+body.bikemode .stop h3{font-size:2rem;margin:.1rem 0 .4rem}body.bikemode .stop p{color:#A3A3A9}
+body.bikemode .tick li::before{color:#FF2B2B}
+body.bikemode .gal div{border-radius:0;filter:grayscale(1) contrast(1.1)}
+body.bikemode .btn{border-radius:0;transform:skewX(-10deg);background:#FF2B2B;color:#0B0B0D;border:0;font:800 italic 1.2rem/1 'Barlow Condensed',sans-serif;letter-spacing:.07em;text-transform:uppercase}
+body.bikemode .btn.ghost{background:#151518;color:#F3EFE8}
+body.bikemode .rbar{background:rgba(11,11,13,.96);border-top:2px solid #FF2B2B;box-shadow:none}
+body.bikemode .rbar .price{font:800 italic 2rem/1 'Barlow Condensed',sans-serif;color:#F3EFE8;text-transform:uppercase}
+body.bikemode .rbar .price small{font:600 .75rem 'Barlow Condensed',sans-serif;letter-spacing:.16em;color:#A3A3A9}
+body.bikemode em{background:none;color:#FF2B2B}
+body.bikemode,body.bikemode.trip{background:#0B0B0D;color:#F3EFE8}
+body.bikemode .mode{background:#151518;border:2px solid #2A2A2F;border-radius:0;padding:3px}
+body.bikemode .mode a{border-radius:0;color:#F3EFE8;font:600 .95rem 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase}
+body.bikemode .mode a.on{background:#FF2B2B;color:#0B0B0D}
+.bt-st li:last-child b{font-size:1.55rem;padding-top:.55rem}
+body.bikemode .calf{background:#151518;border:2px solid #2A2A2F;border-radius:0;color:#F3EFE8}
+body.bikemode .calf .cl{color:#A3A3A9}body.bikemode .cal.open .calf{border-color:#FF2B2B}
+body.bikemode .bike svg{filter:none}
+body.bikemode .ride{margin-top:2.8rem}
+body.bikemode .calpop{background:#151518;border:2px solid #2A2A2F;border-radius:0;box-shadow:0 24px 60px rgba(0,0,0,.65);color:#F3EFE8}
+body.bikemode .calh b{color:#F3EFE8;font:800 italic 1.5rem 'Barlow Condensed',sans-serif;text-transform:uppercase}
+body.bikemode .calh button{border:2px solid #2A2A2F;border-radius:0;color:#F3EFE8;background:#0B0B0D}
+body.bikemode .calw{color:#A3A3A9}
+body.bikemode .calg .d{color:#F3EFE8;border-radius:0}body.bikemode .calg .d.off{opacity:.28}
+body.bikemode .calg .d.in{background:rgba(255,43,43,.22)}
+body.bikemode .calg .d.s,body.bikemode .calg .d.e,body.bikemode .calg .d.s.e{background:#FF2B2B;color:#0B0B0D;border-radius:0;font-weight:700}
+body.bikemode .calg .d.today::after{background:#FF2B2B}body.bikemode .calg .d.s.today::after,body.bikemode .calg .d.e.today::after{background:#0B0B0D}
+body.bikemode .calpop,body.bikemode .calpop *{--tx:#F3EFE8}body.bikemode .clr{color:#FF2B2B}
+body.bikemode .stop.hit,body.bikemode .stop:hover{background:none;border:0;box-shadow:none;outline:0}
+body.bikemode .gal .ph{--g:linear-gradient(145deg,#1D1D21,#0B0B0D)}
+body.bikemode .btn,body.bikemode .dl-btn,body.bikemode .ride,body.bikemode .stop{box-shadow:none}
+body.bikemode .tcard{border-radius:0;box-shadow:none;border:0;border-top:4px solid #FF2B2B}

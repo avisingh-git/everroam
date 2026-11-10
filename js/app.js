@@ -259,15 +259,16 @@ function btrip(slug) {
   title(t.name + " by bike"); cur = slug; bike = true; sel = { b: 0, q: 2, a: null, e: null }; calReset(); document.body.classList.add("trip");
   const others = TRIPS.filter(x => x.slug !== slug);
   return `
-  <div class="thero ph g${(i + 1) % 3}" style="${img(t.slug + "-bike.jpg")}"><div class="wrap">
+  <div class="thero ph g${(i + 1) % 3}" style="${img(b.photo || t.slug + "-bike.jpg")}"><div class="wrap">
     ${modeSw(t.slug, true)}
-    <h1>${t.name}</h1><p class="sub">${b.blurb}</p></div></div>
+    <h1>${t.name}</h1><p class="sub">${b.blurb}</p>
+    <ul class="bt-st"><li><b>${b.days}</b><span>days</span></li><li><b>~${bikeKm(b).toLocaleString("en-IN")}</b><span>km</span></li><li><b>${b.grade}</b><span>grade</span></li></ul></div></div>
   <div class="wrap tbody">
     <div class="chips">${b.highlights.map(h => `<span>${h}</span>`).join("")}</div>
     ${calCard()}
     ${b.live ? `<div class="pick"><div class="qty"><span>Riders</span><div><button type="button" data-q="-1" aria-label="Fewer">\u2212</button><b id="qn">2</b><button type="button" data-q="1" aria-label="More">+</button></div></div></div>` : ""}
     <div><h2>The ride, day by day</h2><div class="ride" id="ride"><div class="road"><div class="bike">${BIKE}</div></div>
-      ${b.itinerary.map(d => `<article class="stop"><small>${d[0]} \u00B7 ~${d[3]} km</small><h3>${d[1]}</h3><p>${d[2]}</p></article>`).join("")}</div></div>
+      ${b.itinerary.map(d => `<article class="stop"><small>${d[0]}</small>${d[3] ? `<b class="km">${d[3]}<i> km</i></b>` : ""}<h3>${d[1]}</h3><p>${d[2]}</p></article>`).join("")}</div></div>
     <a class="btn ghost dl-btn" href="media/Everroam-${t.name}-biking.pdf" download="Everroam-${t.name}-biking.pdf">${DL_ICON} Download itinerary</a>
     ${priceTable(b)}
     <div><h2>Gallery</h2><div class="gal">${[1, 2, 3, 4].map(n => `<div class="ph g${(i + n) % 3} rv" style="${img(t.slug + "-bike-" + n + ".jpg")}"></div>`).join("")}</div></div>
