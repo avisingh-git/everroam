@@ -1076,3 +1076,22 @@ body.bikemode .tcard{border-radius:0}
 .more .tcard::before,.more .tcard.hot::before,body.bikemode .more .tcard::before{background:linear-gradient(transparent 35%,rgba(11,11,13,.92))}
 body .more .tcard.hot.ph{--g:linear-gradient(145deg,#1D1D21,#0B0B0D)}
 .tcard.ph { background-clip: padding-box; }
+/* itinerary gallery: a plain grid (no horizontal scroller), so a finger on it always scrolls the page */
+.gal{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:140px;gap:.6rem;overflow:visible;scroll-snap-type:none;padding-bottom:0}
+.gal>div{flex:none;aspect-ratio:auto;scroll-snap-align:none;border-radius:16px}
+.gal>div:nth-child(1){grid-column:span 2;grid-row:span 2}.gal>div:nth-child(4){grid-column:span 2}
+@media (min-width:600px){.gal{grid-auto-rows:170px}}
+body.bikemode .gal>div{border-radius:0}
+
+/* home hero: one shared gutter for logo, hero text, Scroll cue and Menu, so everything lines up at every width */
+.hb{width:min(1180px,100% - 2.5rem)}
+.hero{padding-inline:max(1.25rem,calc((100% - 1180px)/2))}
+.hero .hc{max-width:none;margin:0;align-items:flex-end}
+.hero .cap{gap:.7rem}
+.hero .cap h1{font-size:clamp(1.25rem,1.1rem + .6vw,1.7rem);line-height:1.2}
+.hero .cue{display:flex;flex-direction:row;align-items:center;gap:.5rem;min-height:48px;padding:0}
+.hero .cue::after{font-size:1.1rem;line-height:1}
+body.home:not(.scrolled) #menu{background:var(--ac);color:var(--acf);min-height:44px;padding:0 1.3rem;font-weight:600;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 8px 24px rgba(0,0,0,.4)}
+/* bike itinerary hero: the huge name can never widen the page, even before the web font has loaded */
+body.bikemode .thero{overflow:hidden}
+body.bikemode .thero h1{max-width:100%;font-size:clamp(4rem,22vw,10rem)}
