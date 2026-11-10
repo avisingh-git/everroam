@@ -1075,3 +1075,4 @@ body.bikemode .tcard{border-radius:0}
 @media (prefers-reduced-motion:reduce){.bn2-rd::before,.bn2 .wh{animation:none}}
 .more .tcard::before,.more .tcard.hot::before,body.bikemode .more .tcard::before{background:linear-gradient(transparent 35%,rgba(11,11,13,.92))}
 body .more .tcard.hot.ph{--g:linear-gradient(145deg,#1D1D21,#0B0B0D)}
+.tcard.ph { background-clip: padding-box; }
