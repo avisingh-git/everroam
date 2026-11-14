@@ -297,14 +297,19 @@ const ioS = new IntersectionObserver(es => es.forEach(e => {            // slide
 }), { rootMargin: "-35% 0px -35% 0px" });
 const ioR = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); ioR.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
 
+// start downloading a card video (its <source>s only get a src once it is needed)
+const prime = v => {
+  if (v.dataset.loaded === "1") return;
+  v.querySelectorAll("source").forEach(s => { s.src = s.dataset.src; });
+  v.dataset.loaded = "1";
+  v.preload = "auto";
+  v.load();                           // browser now walks the source list
+};
+
 const ioV = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
   if (e.isIntersecting) {
-    if (v.dataset.loaded !== "1") {
-      v.querySelectorAll("source").forEach(s => { s.src = s.dataset.src; });
-      v.dataset.loaded = "1";
-      v.load();                       // browser now walks the source list
-    }
+    prime(v);
     v.play().catch(() => {});
   } else v.pause();
 }), { threshold: .3 });
@@ -481,4 +486,36 @@ document.addEventListener("click", e => { const box = e.target.closest("#bl-mbox
   const nm = $(".bl-nm", box); if (nm) ioN.observe(nm); (box.querySelector(".bl-opt,.bl-btn") || box).focus({ preventScroll: true }); });
 /* bike landing: the sun and ridges drift at different speeds as you scroll */
 addEventListener("scroll", () => { const h = $(".bl-hero"); if (h && scrollY < innerHeight * 1.2) requestAnimationFrame(() => h.style.setProperty("--sy", scrollY)); }, { passive: true });
+
+/* loading screen (#boot in index.html). index.html decides when it becomes visible (only if loading is still going on after 0.5 s, or at once on
+   Instagram's in-app browser / 2g-3g). This hides it as soon as the landing hero video, the first trip-card videos and the fonts can play,
+   and never later than CAP ms after the page started loading, however slow the connection is. */
+function bootWait() {
+  const el = document.getElementById("boot"); if (!el) return;       // index.html removed it (Data Saver or ?boot=0)
+  const CAP = 3000, KEEP = 300;                      // CAP = hard limit from page start; KEEP = once visible, the shortest it stays (no flicker)
+  const hero = $(".hv video"), cards = $$(".cv").slice(0, 4);
+  const total = (hero ? 1 : 0) + cards.length + 1;   // +1 = fonts
+  let done = 0, over = false, started = false;
+  const hide = () => {
+    if (over) return; over = true;
+    document.documentElement.classList.remove("boot-shown");
+    if (!el.classList.contains("show")) { el.remove(); return; }     // never became visible (fast load): nothing to fade
+    el.classList.add("out"); setTimeout(() => el.remove(), 700);
+  };
+  const finish = () => setTimeout(hide, window.__bootShown ? Math.max(0, KEEP - (performance.now() - window.__bootShown)) : 0);
+  const tick = () => { done++; el.style.setProperty("--p", Math.max(.06, Math.min(1, done / total))); if (done >= total) finish(); };
+  const track = v => {                               // "ready" = enough buffered to play, or every source failed
+    let fin = false, errs = 0; const n = Math.max(1, v.querySelectorAll("source").length);
+    const end = () => { if (!fin) { fin = true; tick(); } };
+    if (v.readyState >= 3) return end();
+    v.addEventListener("canplay", end, { once: true });
+    v.addEventListener("error", () => { if (++errs >= n) end(); }, true);   // capture: <source> errors do not bubble
+  };
+  const startCards = () => { if (started) return; started = true; cards.forEach(c => { prime(c); track(c); }); };
+  if (hero) { track(hero); if (hero.readyState >= 3) startCards(); else hero.addEventListener("canplay", startCards, { once: true }); } else startCards();
+  setTimeout(startCards, 900);                       // hero is slow? start the cards anyway
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(tick, tick);
+  setTimeout(hide, Math.max(0, CAP - performance.now()));
+}
 render();
+bootWait();
